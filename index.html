@@ -661,5 +661,31 @@
     </footer>
 
     <script src="js/main.js"></script>
+    
+    <!-- Debug console for GitHub Pages -->
+    <script>
+        // Debug information for GitHub Pages
+        console.log('Website loaded successfully');
+        console.log('Current URL:', window.location.href);
+        console.log('Protocol:', window.location.protocol);
+        
+        // Check if we're on GitHub Pages
+        if (window.location.hostname.includes('github.io')) {
+            console.log('Running on GitHub Pages');
+        } else {
+            console.log('Running locally');
+        }
+        
+        // Test Formspree connectivity
+        window.addEventListener('load', () => {
+            fetch('https://formspree.io/f/mgvndopo', {
+                method: 'HEAD'
+            }).then(response => {
+                console.log('Formspree connectivity test:', response.status);
+            }).catch(error => {
+                console.error('Formspree connectivity error:', error);
+            });
+        });
+    </script>
 </body>
 </html>

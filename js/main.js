@@ -621,44 +621,124 @@ class CalendarBooking {
 
     async submitBooking(bookingData) {
         try {
-            // Format the booking data for Formspree
-            const formData = new FormData();
-            
-            // Add all booking fields
-            formData.append('name', bookingData.clientName);
-            formData.append('email', bookingData.clientEmail);
-            formData.append('phone', bookingData.clientPhone || 'Not provided');
-            formData.append('session_type', this.getSessionTypeName(bookingData.sessionType));
-            formData.append('session_duration', `${bookingData.sessionDuration} minutes`);
-            formData.append('meeting_type', this.getMeetingTypeName(bookingData.meetingType));
-            formData.append('project_description', bookingData.projectDescription || 'Not provided');
-            formData.append('additional_notes', bookingData.additionalNotes || 'Not provided');
-            formData.append('booking_date', new Date(bookingData.selectedDate).toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            }));
-            formData.append('booking_time', bookingData.selectedTime);
-            formData.append('booking_id', bookingData.bookingId);
-            formData.append('_subject', `New Booking: ${bookingData.bookingId} - ${bookingData.clientName}`);
-            formData.append('_replyto', bookingData.clientEmail);
-            
-            // Formspree endpoint for booking submissions
-            const response = await fetch('https://formspree.io/f/mgvndopo', {
-                method: 'POST',
-                body: formData
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to submit booking');
+            // Try fetch method first
+            try {
+                return await this.submitViaFetch(bookingData);
+            } catch (fetchError) {
+                console.warn('Fetch method failed, trying form submission:', fetchError);
+                return await this.submitViaForm(bookingData);
             }
-            
-            return { success: true, message: 'Booking submitted successfully!' };
         } catch (error) {
-            console.error('Booking submission error:', error);
+            console.error('All submission methods failed:', error);
             throw error;
         }
+    }
+
+    async submitViaFetch(bookingData) {
+        // Format the booking data for Formspree
+        const formData = new FormData();
+        
+        // Add all booking fields
+        formData.append('name', bookingData.clientName);
+        formData.append('email', bookingData.clientEmail);
+        formData.append('phone', bookingData.clientPhone || 'Not provided');
+        formData.append('session_type', this.getSessionTypeName(bookingData.sessionType));
+        formData.append('session_duration', `${bookingData.sessionDuration} minutes`);
+        formData.append('meeting_type', this.getMeetingTypeName(bookingData.meetingType));
+        formData.append('project_description', bookingData.projectDescription || 'Not provided');
+        formData.append('additional_notes', bookingData.additionalNotes || 'Not provided');
+        formData.append('booking_date', new Date(bookingData.selectedDate).toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }));
+        formData.append('booking_time', bookingData.selectedTime);
+        formData.append('booking_id', bookingData.bookingId);
+        formData.append('_subject', `New Booking: ${bookingData.bookingId} - ${bookingData.clientName}`);
+        formData.append('_replyto', bookingData.clientEmail);
+        
+        console.log('Submitting booking data via fetch:', bookingData);
+        
+        // Formspree endpoint for booking submissions
+        const response = await fetch('https://formspree.io/f/mgvndopo', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        
+        console.log('Response status:', response.status);
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Formspree error response:', errorText);
+            throw new Error(`Failed to submit booking: ${response.status} ${response.statusText}`);
+        }
+        
+        const result = await response.json();
+        console.log('Formspree success response:', result);
+        
+        return { success: true, message: 'Booking submitted successfully!' };
+    }
+
+    async submitViaForm(bookingData) {
+        return new Promise((resolve, reject) => {
+            // Create a hidden form
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'https://formspree.io/f/mgvndopo';
+            form.style.display = 'none';
+            
+            // Add all fields as hidden inputs
+            const fields = {
+                'name': bookingData.clientName,
+                'email': bookingData.clientEmail,
+                'phone': bookingData.clientPhone || 'Not provided',
+                'session_type': this.getSessionTypeName(bookingData.sessionType),
+                'session_duration': `${bookingData.sessionDuration} minutes`,
+                'meeting_type': this.getMeetingTypeName(bookingData.meetingType),
+                'project_description': bookingData.projectDescription || 'Not provided',
+                'additional_notes': bookingData.additionalNotes || 'Not provided',
+                'booking_date': new Date(bookingData.selectedDate).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }),
+                'booking_time': bookingData.selectedTime,
+                'booking_id': bookingData.bookingId,
+                '_subject': `New Booking: ${bookingData.bookingId} - ${bookingData.clientName}`,
+                '_replyto': bookingData.clientEmail
+            };
+            
+            Object.entries(fields).forEach(([key, value]) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                form.appendChild(input);
+            });
+            
+            // Add form to page and submit
+            document.body.appendChild(form);
+            
+            // Handle form submission
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                console.log('Form submitted via hidden form method');
+                resolve({ success: true, message: 'Booking submitted successfully!' });
+            });
+            
+            // Submit the form
+            form.submit();
+            
+            // Clean up after a delay
+            setTimeout(() => {
+                document.body.removeChild(form);
+            }, 1000);
+        });
     }
 
     getSessionTypeName(type) {
