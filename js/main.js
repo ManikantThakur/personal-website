@@ -778,71 +778,65 @@ class CalendarBooking {
     }
 }
 
+
+
+
 // Initialize calendar booking when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new CalendarBooking();
     initSkillsInteractions();
 });
 
-// Skills section interactions
+// Pie Chart Skills section interactions
 function initSkillsInteractions() {
-    const skillGroups = document.querySelectorAll('.skill-group');
+    const pieSegments = document.querySelectorAll('.pie-segment');
+    const skillPanels = document.querySelectorAll('.skill-details-panel');
+    const panelCloseButtons = document.querySelectorAll('.panel-close');
     
-    skillGroups.forEach(group => {
-        const skillMain = group.querySelector('.skill-main');
-        
-        skillMain.addEventListener('click', function(e) {
+    
+    // Handle pie segment clicks
+    pieSegments.forEach(segment => {
+        segment.addEventListener('click', function(e) {
+            e.preventDefault();
             e.stopPropagation();
+            const category = this.getAttribute('data-category');
             
-            // Close other groups with animation
-            skillGroups.forEach(otherGroup => {
-                if (otherGroup !== group && otherGroup.classList.contains('active')) {
-                    otherGroup.style.transform = 'translateY(0) scale(1)';
-                    setTimeout(() => {
-                        otherGroup.classList.remove('active');
-                    }, 150);
-                }
-            });
+            // Add visual feedback
+            this.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
             
-            // Toggle current group with smooth animation
-            if (group.classList.contains('active')) {
-                group.style.transform = 'translateY(0) scale(1)';
-                setTimeout(() => {
-                    group.classList.remove('active');
-                }, 150);
-            } else {
-                group.classList.add('active');
-                // Add a subtle bounce effect
-                setTimeout(() => {
-                    group.style.transform = 'translateY(-12px) scale(1.05)';
-                }, 50);
-            }
+            openSkillPanel(category);
         });
         
-        // Add hover effects for the main skill group
-        group.addEventListener('mouseenter', function() {
-            if (!this.classList.contains('active')) {
-                this.style.transform = 'translateY(-8px) scale(1.02)';
-            }
+        segment.addEventListener('mouseenter', function() {
+            this.classList.add('active');
         });
         
-        group.addEventListener('mouseleave', function() {
-            if (!this.classList.contains('active')) {
-                this.style.transform = 'translateY(0) scale(1)';
-            }
+        segment.addEventListener('mouseleave', function() {
+            this.classList.remove('active');
         });
     });
     
-    // Add enhanced hover effects for individual skill items
+    
+    // Handle panel close buttons
+    panelCloseButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            closeAllSkillPanels();
+        });
+    });
+    
+    // Handle individual skill item interactions
     const skillItems = document.querySelectorAll('.skill-item');
     skillItems.forEach(item => {
         item.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.15) translateY(-2px)';
+            this.style.transform = 'translateY(-4px) scale(1.05)';
             this.style.zIndex = '10';
         });
         
         item.addEventListener('mouseleave', function() {
-            this.style.transform = 'scale(1) translateY(0)';
+            this.style.transform = 'translateY(0) scale(1)';
             this.style.zIndex = '1';
         });
         
@@ -857,11 +851,70 @@ function initSkillsInteractions() {
         });
     });
     
-    // Add skill level legend
-    addSkillLegend();
     
-    // Add intersection observer for skill groups
-    addSkillGroupObserver();
+    // Add intersection observer for pie chart
+    addPieChartObserver();
+}
+
+function openSkillPanel(category) {
+    // Close all panels first
+    closeAllSkillPanels();
+    
+    // Open the selected panel
+    const panel = document.querySelector(`.skill-details-panel[data-category="${category}"]`);
+    if (panel) {
+        panel.classList.add('active');
+        
+        // Force the panel to be visible
+        panel.style.display = 'block';
+        panel.style.opacity = '1';
+        panel.style.visibility = 'visible';
+        
+        // Add active state to corresponding pie segment
+        const segment = document.querySelector(`.pie-segment[data-category="${category}"]`);
+        if (segment) segment.classList.add('active');
+        
+        // Force a reflow to ensure the display change takes effect
+        panel.offsetHeight;
+    }
+}
+
+function closeAllSkillPanels() {
+    const panels = document.querySelectorAll('.skill-details-panel');
+    const segments = document.querySelectorAll('.pie-segment');
+    
+    panels.forEach(panel => {
+        panel.classList.remove('active');
+        panel.style.display = 'none';
+        panel.style.opacity = '0';
+        panel.style.visibility = 'hidden';
+    });
+    
+    segments.forEach(segment => {
+        segment.classList.remove('active');
+    });
+}
+
+function addPieChartObserver() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0) scale(1)';
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    const pieChart = document.querySelector('.pie-chart');
+    if (pieChart) {
+        pieChart.style.opacity = '0';
+        pieChart.style.transform = 'translateY(30px) scale(0.9)';
+        pieChart.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        observer.observe(pieChart);
+    }
 }
 
 function createRippleEffect(element, event) {
@@ -894,28 +947,6 @@ function createRippleEffect(element, event) {
     }, 600);
 }
 
-function addSkillGroupObserver() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    });
-    
-    const skillGroups = document.querySelectorAll('.skill-group');
-    skillGroups.forEach((group, index) => {
-        group.style.opacity = '0';
-        group.style.transform = 'translateY(30px)';
-        group.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        group.style.transitionDelay = `${index * 0.1}s`;
-        observer.observe(group);
-    });
-}
 
 function getLevelText(level) {
     const levels = {
@@ -971,84 +1002,4 @@ function showTooltip(element, text) {
             }
         }, 300);
     }, 3000);
-}
-
-function addSkillLegend() {
-    const skillsSection = document.querySelector('.skills');
-    if (!skillsSection) return;
-    
-    const legend = document.createElement('div');
-    legend.className = 'skill-legend';
-    legend.innerHTML = `
-        <h4>Skill Levels</h4>
-        <div class="legend-items">
-            <div class="legend-item">
-                <span class="legend-icon">★</span>
-                <span>Expert (5+ years)</span>
-            </div>
-            <div class="legend-item">
-                <span class="legend-icon">●</span>
-                <span>Advanced (3-5 years)</span>
-            </div>
-            <div class="legend-item">
-                <span class="legend-icon">○</span>
-                <span>Intermediate (1-3 years)</span>
-            </div>
-        </div>
-    `;
-    
-    legend.style.cssText = `
-        margin-top: 2rem;
-        padding: 1.5rem;
-        background: #f7fafc;
-        border-radius: 12px;
-        border: 1px solid #e2e8f0;
-        text-align: center;
-    `;
-    
-    // Add legend styles
-    const style = document.createElement('style');
-    style.textContent = `
-        .skill-legend h4 {
-            margin-bottom: 1rem;
-            color: #1a202c;
-            font-size: 1.1rem;
-        }
-        .legend-items {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            color: #4a5568;
-        }
-        .legend-icon {
-            font-size: 1rem;
-        }
-        .skill-item.active {
-            transform: translateY(-4px) scale(1.05) !important;
-            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.25) !important;
-            border-color: #667eea !important;
-        }
-        @media (prefers-color-scheme: dark) {
-            .skill-legend {
-                background: #2d3748;
-                border-color: #4a5568;
-            }
-            .skill-legend h4 {
-                color: #f7fafc;
-            }
-            .legend-item {
-                color: #a0aec0;
-            }
-        }
-    `;
-    document.head.appendChild(style);
-    
-    skillsSection.appendChild(legend);
 }

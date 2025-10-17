@@ -81,170 +81,236 @@
                     <h3>Core Skills</h3>
                     <p class="skills-intro">Click on any skill category to explore detailed technologies</p>
                     
-                    <div class="skills-container">
-                        <!-- Cloud & DevOps -->
-                        <div class="skill-group" data-category="cloud">
-                            <div class="skill-main">
-                                <div class="skill-icon">
+                    <div class="pie-chart-container">
+                        <div class="pie-chart">
+                            <!-- Use divs instead of SVG for better click handling -->
+                            <div class="pie-segment" data-category="cloud" style="clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 50%);">
+                                <div class="segment-content">
                                     <i class="fas fa-cloud"></i>
-                                </div>
-                                <span class="skill-name">Cloud & DevOps</span>
-                                <div class="skill-level expert">Expert</div>
-                            </div>
-                            <div class="skill-details">
-                                <div class="skill-items">
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fab fa-aws"></i>
-                                        <span>AWS</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fab fa-google"></i>
-                                        <span>GCP</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fab fa-microsoft"></i>
-                                        <span>Azure</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fab fa-docker"></i>
-                                        <span>Docker</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-cubes"></i>
-                                        <span>Kubernetes</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-tools"></i>
-                                        <span>Terraform</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-git-alt"></i>
-                                        <span>GitLab</span>
-                                    </div>
-                                    <div class="skill-item" data-level="advanced">
-                                        <i class="fas fa-server"></i>
-                                        <span>Jenkins</span>
+                                    <div class="segment-text">
+                                        <span class="skill-name">Cloud & DevOps</span>
+                                        <span class="skill-level">★ Expert (8+ years)</span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- AI & Machine Learning -->
-                        <div class="skill-group" data-category="ai">
-                            <div class="skill-main">
-                                <div class="skill-icon">
+                            <div class="pie-segment" data-category="ai" style="clip-path: polygon(50% 50%, 100% 0%, 100% 100%, 50% 100%);">
+                                <div class="segment-content">
                                     <i class="fas fa-brain"></i>
-                                </div>
-                                <span class="skill-name">AI & ML</span>
-                                <div class="skill-level expert">Expert</div>
-                            </div>
-                            <div class="skill-details">
-                                <div class="skill-items">
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-robot"></i>
-                                        <span>GenAI</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-brain"></i>
-                                        <span>LangChain</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-project-diagram"></i>
-                                        <span>LangGraph</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-database"></i>
-                                        <span>Vector DB</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-search"></i>
-                                        <span>RAG</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-file-alt"></i>
-                                        <span>Document AI</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-robot"></i>
-                                        <span>AI Agents</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-cogs"></i>
-                                        <span>AgentVerse</span>
+                                    <div class="segment-text">
+                                        <span class="skill-name">AI & ML</span>
+                                        <span class="skill-level">● Advanced (4 years)</span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Programming -->
-                        <div class="skill-group" data-category="programming">
-                            <div class="skill-main">
-                                <div class="skill-icon">
+                            <div class="pie-segment" data-category="programming" style="clip-path: polygon(50% 50%, 100% 100%, 0% 100%, 0% 50%);">
+                                <div class="segment-content">
                                     <i class="fas fa-code"></i>
-                                </div>
-                                <span class="skill-name">Programming</span>
-                                <div class="skill-level expert">Expert</div>
-                            </div>
-                            <div class="skill-details">
-                                <div class="skill-items">
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fab fa-python"></i>
-                                        <span>Python</span>
-                                    </div>
-                                    <div class="skill-item" data-level="advanced">
-                                        <i class="fab fa-js"></i>
-                                        <span>JavaScript</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-code"></i>
-                                        <span>Live Coding</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-search-plus"></i>
-                                        <span>Code Review</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-toolbox"></i>
-                                        <span>ADK</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-exchange-alt"></i>
-                                        <span>A2A</span>
-                                    </div>
-                                    <div class="skill-item" data-level="expert">
-                                        <i class="fas fa-sitemap"></i>
-                                        <span>Architecture</span>
-                                    </div>
-                                    <div class="skill-item" data-level="advanced">
-                                        <i class="fas fa-tools"></i>
-                                        <span>Dev Tools</span>
+                                    <div class="segment-text">
+                                        <span class="skill-name">Programming</span>
+                                        <span class="skill-level">★ Expert (10+ years)</span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Security -->
-                        <div class="skill-group" data-category="security">
-                            <div class="skill-main">
-                                <div class="skill-icon">
+                            <div class="pie-segment" data-category="security" style="clip-path: polygon(50% 50%, 0% 50%, 0% 0%, 50% 0%);">
+                                <div class="segment-content">
                                     <i class="fas fa-shield-alt"></i>
+                                    <div class="segment-text">
+                                        <span class="skill-name">Security</span>
+                                        <span class="skill-level">● Advanced (5 years)</span>
+                                    </div>
                                 </div>
-                                <span class="skill-name">Security</span>
-                                <div class="skill-level advanced">Advanced</div>
                             </div>
-                            <div class="skill-details">
-                                <div class="skill-items">
-                                    <div class="skill-item" data-level="advanced">
+                            
+                            
+                        </div>
+                        
+                        
+                        <!-- Skill details panels -->
+                        <div class="skill-details-panels">
+                            <!-- Cloud & DevOps Details -->
+                            <div class="skill-details-panel" data-category="cloud">
+                                <div class="panel-header">
+                                    <div class="panel-icon">
+                                        <i class="fas fa-cloud"></i>
+                                    </div>
+                                    <div class="panel-title">
+                                        <h4>Cloud & DevOps</h4>
+                                        <span class="skill-level expert">Expert</span>
+                                    </div>
+                                    <button class="panel-close">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="skill-items">
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fab fa-aws"></i>
+                                            <span>AWS</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fab fa-google"></i>
+                                            <span>GCP</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fab fa-microsoft"></i>
+                                            <span>Azure</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fab fa-docker"></i>
+                                            <span>Docker</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-cubes"></i>
+                                            <span>Kubernetes</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-tools"></i>
+                                            <span>Terraform</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-git-alt"></i>
+                                            <span>GitLab</span>
+                                        </div>
+                                        <div class="skill-item" data-level="advanced">
+                                            <i class="fas fa-server"></i>
+                                            <span>Jenkins</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AI & ML Details -->
+                            <div class="skill-details-panel" data-category="ai">
+                                <div class="panel-header">
+                                    <div class="panel-icon">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <div class="panel-title">
+                                        <h4>AI & ML</h4>
+                                        <span class="skill-level expert">Expert</span>
+                                    </div>
+                                    <button class="panel-close">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="skill-items">
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-robot"></i>
+                                            <span>GenAI</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-brain"></i>
+                                            <span>LangChain</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-project-diagram"></i>
+                                            <span>LangGraph</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-database"></i>
+                                            <span>Vector DB</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-search"></i>
+                                            <span>RAG</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-file-alt"></i>
+                                            <span>Document AI</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-robot"></i>
+                                            <span>AI Agents</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-cogs"></i>
+                                            <span>AgentVerse</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Programming Details -->
+                            <div class="skill-details-panel" data-category="programming">
+                                <div class="panel-header">
+                                    <div class="panel-icon">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <div class="panel-title">
+                                        <h4>Programming</h4>
+                                        <span class="skill-level expert">Expert</span>
+                                    </div>
+                                    <button class="panel-close">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="skill-items">
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fab fa-python"></i>
+                                            <span>Python</span>
+                                        </div>
+                                        <div class="skill-item" data-level="advanced">
+                                            <i class="fab fa-js"></i>
+                                            <span>JavaScript</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-code"></i>
+                                            <span>Live Coding</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-search-plus"></i>
+                                            <span>Code Review</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-toolbox"></i>
+                                            <span>ADK</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-exchange-alt"></i>
+                                            <span>A2A</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-sitemap"></i>
+                                            <span>Architecture</span>
+                                        </div>
+                                        <div class="skill-item" data-level="advanced">
+                                            <i class="fas fa-tools"></i>
+                                            <span>Dev Tools</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Security Details -->
+                            <div class="skill-details-panel" data-category="security">
+                                <div class="panel-header">
+                                    <div class="panel-icon">
                                         <i class="fas fa-shield-alt"></i>
-                                        <span>Nessus</span>
                                     </div>
-                                    <div class="skill-item" data-level="advanced">
-                                        <i class="fas fa-search"></i>
-                                        <span>Burp Suite</span>
+                                    <div class="panel-title">
+                                        <h4>Security</h4>
+                                        <span class="skill-level advanced">Advanced</span>
                                     </div>
-                                    <div class="skill-item" data-level="intermediate">
-                                        <i class="fas fa-network-wired"></i>
-                                        <span>Wireshark</span>
+                                    <button class="panel-close">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="skill-items">
+                                        <div class="skill-item" data-level="advanced">
+                                            <i class="fas fa-shield-alt"></i>
+                                            <span>Nessus</span>
+                                        </div>
+                                        <div class="skill-item" data-level="advanced">
+                                            <i class="fas fa-search"></i>
+                                            <span>Burp Suite</span>
+                                        </div>
+                                        <div class="skill-item" data-level="intermediate">
+                                            <i class="fas fa-network-wired"></i>
+                                            <span>Wireshark</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
