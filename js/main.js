@@ -44,43 +44,60 @@ window.addEventListener('scroll', () => {
 // Contact form handling
 const contactForm = document.getElementById('contactForm');
 
-contactForm.addEventListener('submit', function(e) {
+contactForm.addEventListener('submit', async function(e) {
     e.preventDefault();
-    
+
     // Get form data
     const formData = new FormData(contactForm);
     const name = formData.get('name');
     const email = formData.get('email');
     const subject = formData.get('subject');
     const message = formData.get('message');
-    
+
     // Simple validation
     if (!name || !email || !subject || !message) {
         alert('Please fill in all fields.');
         return;
     }
-    
+
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         alert('Please enter a valid email address.');
         return;
     }
-    
-    // Simulate form submission
+
     const submitBtn = contactForm.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
-    
+
     submitBtn.textContent = 'Sending...';
     submitBtn.disabled = true;
-    
-    // Simulate API call
-    setTimeout(() => {
+
+    try {
+        formData.append('_subject', `New contact form message: ${subject}`);
+        formData.append('_replyto', email);
+
+        const response = await fetch('https://formspree.io/f/mgvndopo', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Formspree responded with ${response.status}`);
+        }
+
         alert('Thank you for your message! I\'ll get back to you soon.');
         contactForm.reset();
+    } catch (error) {
+        console.error('Contact form submission failed:', error);
+        alert('Sorry, there was an error sending your message. Please try again or email me directly.');
+    } finally {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
-    }, 2000);
+    }
 });
 
 // Intersection Observer for animations
@@ -344,29 +361,41 @@ class CalendarBooking {
 
     generateTimeSlots(date) {
         const slots = [];
-        const hour = date.getHours();
-        
+        const dateStr = this.formatDate(date);
+
         // Generate slots from 9 AM to 5 PM
         for (let h = 9; h <= 17; h++) {
             if (h === 12) continue; // Skip lunch hour
-            
+
             // Add 30-minute and 60-minute slots
             slots.push({
                 time: `${h.toString().padStart(2, '0')}:00`,
-                available: Math.random() > 0.3, // 70% availability
+                available: this.isSlotAvailable(dateStr, `${h}:00`),
                 duration: 30
             });
-            
+
             if (h < 17) {
                 slots.push({
                     time: `${h.toString().padStart(2, '0')}:30`,
-                    available: Math.random() > 0.3,
+                    available: this.isSlotAvailable(dateStr, `${h}:30`),
                     duration: 30
                 });
             }
         }
-        
+
         return slots;
+    }
+
+    // Deterministic stand-in for real calendar availability: hashes the
+    // date+time so the same slot shows the same availability on every load
+    // instead of a fresh coin flip (Math.random) each time the page opens.
+    isSlotAvailable(dateStr, time) {
+        const str = `${dateStr}-${time}`;
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
+        }
+        return (hash % 10) < 7; // ~70% availability
     }
 
     formatDate(date) {
@@ -431,7 +460,7 @@ class CalendarBooking {
             
             if (isAvailable) {
                 dayElement.classList.add('available');
-                dayElement.addEventListener('click', () => this.selectDate(currentDate));
+                dayElement.addEventListener('click', () => this.selectDate(currentDate, dayElement));
             } else {
                 dayElement.classList.add('unavailable');
             }
@@ -445,15 +474,15 @@ class CalendarBooking {
         return date.toDateString() === today.toDateString();
     }
 
-    selectDate(date) {
+    selectDate(date, element) {
         // Remove previous selection
         document.querySelectorAll('.calendar-day.selected').forEach(day => {
             day.classList.remove('selected');
         });
 
         // Add selection to clicked day
-        event.target.classList.add('selected');
-        
+        element.classList.add('selected');
+
         this.selectedDate = date;
         this.showTimeSlots(date);
     }
@@ -476,7 +505,7 @@ class CalendarBooking {
                 const slotElement = document.createElement('div');
                 slotElement.className = 'time-slot';
                 slotElement.textContent = slot.time;
-                slotElement.addEventListener('click', () => this.selectTime(slot));
+                slotElement.addEventListener('click', () => this.selectTime(slot, slotElement));
                 slotsGrid.appendChild(slotElement);
             }
         });
@@ -484,15 +513,15 @@ class CalendarBooking {
         timeSlotsContainer.style.display = 'block';
     }
 
-    selectTime(slot) {
+    selectTime(slot, element) {
         // Remove previous selection
         document.querySelectorAll('.time-slot.selected').forEach(timeSlot => {
             timeSlot.classList.remove('selected');
         });
 
         // Add selection to clicked slot
-        event.target.classList.add('selected');
-        
+        element.classList.add('selected');
+
         this.selectedTime = slot;
         this.showBookingModal();
     }
@@ -621,8 +650,7 @@ class CalendarBooking {
 
     async submitBooking(bookingData) {
         try {
-            // Use simple form submission method for better compatibility
-            return await this.submitViaForm(bookingData);
+            return await this.submitViaFetch(bookingData);
         } catch (error) {
             console.error('Booking submission failed:', error);
             throw error;
@@ -676,63 +704,6 @@ class CalendarBooking {
         console.log('Formspree success response:', result);
         
         return { success: true, message: 'Booking submitted successfully!' };
-    }
-
-    async submitViaForm(bookingData) {
-        return new Promise((resolve, reject) => {
-            // Create a hidden form
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'https://formspree.io/f/mgvndopo';
-            form.target = '_blank';
-            form.style.display = 'none';
-            
-            // Add all fields as hidden inputs
-            const fields = {
-                'name': bookingData.clientName,
-                'email': bookingData.clientEmail,
-                'phone': bookingData.clientPhone || 'Not provided',
-                'session_type': this.getSessionTypeName(bookingData.sessionType),
-                'session_duration': `${bookingData.sessionDuration} minutes`,
-                'meeting_type': this.getMeetingTypeName(bookingData.meetingType),
-                'project_description': bookingData.projectDescription || 'Not provided',
-                'additional_notes': bookingData.additionalNotes || 'Not provided',
-                'booking_date': new Date(bookingData.selectedDate).toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                }),
-                'booking_time': bookingData.selectedTime,
-                'booking_id': bookingData.bookingId,
-                '_subject': `New Booking: ${bookingData.bookingId} - ${bookingData.clientName}`,
-                '_replyto': bookingData.clientEmail
-            };
-            
-            Object.entries(fields).forEach(([key, value]) => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = key;
-                input.value = value;
-                form.appendChild(input);
-            });
-            
-            // Add form to page and submit
-            document.body.appendChild(form);
-            
-            // Submit the form
-            form.submit();
-            
-            // Resolve immediately since we can't track the actual submission
-            resolve({ success: true, message: 'Booking submitted successfully! You will be redirected to a confirmation page.' });
-            
-            // Clean up after a delay
-            setTimeout(() => {
-                if (document.body.contains(form)) {
-                    document.body.removeChild(form);
-                }
-            }, 2000);
-        });
     }
 
     getSessionTypeName(type) {
