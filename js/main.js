@@ -737,134 +737,30 @@ document.addEventListener('DOMContentLoaded', () => {
     initSkillsInteractions();
 });
 
-// Pie Chart Skills section interactions
+// Skill category cards interactions
 function initSkillsInteractions() {
-    const pieSegments = document.querySelectorAll('.pie-segment');
-    const skillPanels = document.querySelectorAll('.skill-details-panel');
-    const panelCloseButtons = document.querySelectorAll('.panel-close');
-    
-    
-    // Handle pie segment clicks
-    pieSegments.forEach(segment => {
-        segment.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const category = this.getAttribute('data-category');
-            
-            // Add visual feedback
-            this.style.transform = 'scale(1.1)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 200);
-            
-            openSkillPanel(category);
-        });
-        
-        segment.addEventListener('mouseenter', function() {
-            this.classList.add('active');
-        });
-        
-        segment.addEventListener('mouseleave', function() {
-            this.classList.remove('active');
-        });
-    });
-    
-    
-    // Handle panel close buttons
-    panelCloseButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            closeAllSkillPanels();
-        });
-    });
-    
-    // Handle individual skill item interactions
     const skillItems = document.querySelectorAll('.skill-item');
     skillItems.forEach(item => {
         item.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-4px) scale(1.05)';
             this.style.zIndex = '10';
         });
-        
+
         item.addEventListener('mouseleave', function() {
             this.style.transform = 'translateY(0) scale(1)';
             this.style.zIndex = '1';
         });
-        
+
         // Add click effect for individual items with ripple
         item.addEventListener('click', function(e) {
             e.stopPropagation();
             createRippleEffect(this, e);
-            
+
             const level = this.getAttribute('data-level');
             const levelText = getLevelText(level);
             showTooltip(this, levelText);
         });
     });
-    
-    
-    // Add intersection observer for pie chart
-    addPieChartObserver();
-}
-
-function openSkillPanel(category) {
-    // Close all panels first
-    closeAllSkillPanels();
-    
-    // Open the selected panel
-    const panel = document.querySelector(`.skill-details-panel[data-category="${category}"]`);
-    if (panel) {
-        panel.classList.add('active');
-        
-        // Force the panel to be visible
-        panel.style.display = 'block';
-        panel.style.opacity = '1';
-        panel.style.visibility = 'visible';
-        
-        // Add active state to corresponding pie segment
-        const segment = document.querySelector(`.pie-segment[data-category="${category}"]`);
-        if (segment) segment.classList.add('active');
-        
-        // Force a reflow to ensure the display change takes effect
-        panel.offsetHeight;
-    }
-}
-
-function closeAllSkillPanels() {
-    const panels = document.querySelectorAll('.skill-details-panel');
-    const segments = document.querySelectorAll('.pie-segment');
-    
-    panels.forEach(panel => {
-        panel.classList.remove('active');
-        panel.style.display = 'none';
-        panel.style.opacity = '0';
-        panel.style.visibility = 'hidden';
-    });
-    
-    segments.forEach(segment => {
-        segment.classList.remove('active');
-    });
-}
-
-function addPieChartObserver() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0) scale(1)';
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    });
-    
-    const pieChart = document.querySelector('.pie-chart');
-    if (pieChart) {
-        pieChart.style.opacity = '0';
-        pieChart.style.transform = 'translateY(30px) scale(0.9)';
-        pieChart.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        observer.observe(pieChart);
-    }
 }
 
 function createRippleEffect(element, event) {

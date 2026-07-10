@@ -458,340 +458,121 @@ p {
         color: #a0aec0;
     }
 
-/* Pie Chart Container */
-.pie-chart-container {
-    position: relative;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-.pie-chart {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    overflow: hidden;
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
-}
-
-.pie-segment {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    transform-origin: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.pie-segment[data-category="cloud"] {
-    background: linear-gradient(135deg, #667eea 0%, #5a67d8 100%);
-}
-
-.pie-segment[data-category="ai"] {
-    background: linear-gradient(135deg, #764ba2 0%, #6b46c1 100%);
-}
-
-.pie-segment[data-category="programming"] {
-    background: linear-gradient(135deg, #f093fb 0%, #e879f9 100%);
-}
-
-.pie-segment[data-category="security"] {
-    background: linear-gradient(135deg, #4facfe 0%, #3b82f6 100%);
-}
-
-.pie-segment:hover {
-    transform: scale(1.05);
-    filter: brightness(1.1);
-    z-index: 5;
-}
-
-.pie-segment.active {
-    transform: scale(1.1);
-    filter: brightness(1.2);
-    z-index: 10;
-}
-
-.segment-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-align: center;
-    pointer-events: none;
-    padding: 0.5rem;
-    height: 100%;
-    position: relative;
-}
-
-.segment-text {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    z-index: 5;
-}
-
-/* Center the label within each segment's own quadrant */
-.pie-segment[data-category="cloud"] .segment-text {
-    top: 25%;
-    left: 75%;
-}
-
-.pie-segment[data-category="ai"] .segment-text {
-    top: 25%;
-    left: 25%;
-}
-
-.pie-segment[data-category="programming"] .segment-text {
-    top: 75%;
-    left: 25%;
-}
-
-.pie-segment[data-category="security"] .segment-text {
-    top: 75%;
-    left: 75%;
-}
-
-.segment-content i {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.segment-text .skill-name {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
-    margin-bottom: 0.2rem;
-    white-space: nowrap;
-}
-
-.segment-text .skill-level {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.9);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
-    white-space: nowrap;
-}
-
-/* Position icons towards outer edge of each segment */
-.pie-segment[data-category="cloud"] .segment-content i {
-    position: absolute;
-    top: 15%;
-    right: 15%;
-    transform: translate(50%, -50%);
-}
-
-.pie-segment[data-category="ai"] .segment-content i {
-    position: absolute;
-    top: 15%;
-    left: 15%;
-    transform: translate(-50%, -50%);
-}
-
-.pie-segment[data-category="programming"] .segment-content i {
-    position: absolute;
-    bottom: 15%;
-    left: 15%;
-    transform: translate(-50%, 50%);
-}
-
-.pie-segment[data-category="security"] .segment-content i {
-    position: absolute;
-    bottom: 15%;
-    right: 15%;
-    transform: translate(50%, 50%);
-}
-
-/* Hover effects for icons */
-.pie-segment:hover .segment-content i {
-    transform: scale(1.2);
-    transition: all 0.3s ease;
-}
-
-.pie-segment[data-category="cloud"]:hover .segment-content i {
-    transform: translate(50%, -50%) scale(1.2);
-}
-
-.pie-segment[data-category="ai"]:hover .segment-content i {
-    transform: translate(-50%, -50%) scale(1.2);
-}
-
-.pie-segment[data-category="programming"]:hover .segment-content i {
-    transform: translate(-50%, 50%) scale(1.2);
-}
-
-.pie-segment[data-category="security"]:hover .segment-content i {
-    transform: translate(50%, 50%) scale(1.2);
-}
-
-
-/* Hover effects for segment text */
-.pie-segment:hover .segment-text .skill-name {
-    transform: scale(1.1);
-    transition: all 0.3s ease;
-}
-
-.pie-segment:hover .segment-text .skill-level {
-    transform: scale(1.05);
-    transition: all 0.3s ease;
-}
-
-
-.segment-content span {
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.segment-content .skill-name {
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 0.2rem;
-}
-
-.segment-content .skill-level {
-    font-size: 0.75rem;
-    font-weight: 500;
-    opacity: 0.9;
-    margin-top: 0.2rem;
-}
-
-/* Skill Details Panels */
-.skill-details-panels {
+/* Skill Category Cards */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.75rem;
     margin-top: 2rem;
 }
 
-.skill-details-panel {
-    display: none;
+.skill-category-card {
     background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.12);
     border: 1px solid #e2e8f0;
-    margin-bottom: 2rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.3s ease;
+    padding: 1.75rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.skill-category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 35px rgba(102, 126, 234, 0.18);
 }
 
-.skill-details-panel.active {
-    display: block !important;
-    opacity: 1;
-    transform: translateY(0);
+:root[data-theme="dark"] .skill-category-card {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    border-color: #4a5568;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
+:root[data-theme="dark"] .skill-category-card:hover {
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.4);
+}
 
-:root[data-theme="dark"] .skill-details-panel {
-        background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-        border-color: #4a5568;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    }
-
-.panel-header {
+.skill-category-header {
     display: flex;
     align-items: center;
-    padding: 1.5rem 2rem;
-    border-bottom: 1px solid #e2e8f0;
-    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-    border-radius: 20px 20px 0 0;
+    margin-bottom: 1.5rem;
 }
 
-:root[data-theme="dark"] .panel-header {
-        border-bottom-color: #4a5568;
-        background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
-    }
-
-.panel-icon {
-    width: 50px;
-    height: 50px;
+.skill-category-icon {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 1rem;
+    color: white;
+    font-size: 1.3rem;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
-.panel-icon i {
-    font-size: 1.2rem;
-    color: white;
+.skill-category-card[data-category="cloud"] .skill-category-icon {
+    background: linear-gradient(135deg, #667eea 0%, #5a67d8 100%);
 }
 
-.panel-title {
-    flex: 1;
+.skill-category-card[data-category="ai"] .skill-category-icon {
+    background: linear-gradient(135deg, #764ba2 0%, #6b46c1 100%);
 }
 
-.panel-title h4 {
-    margin: 0 0 0.25rem 0;
+.skill-category-card[data-category="programming"] .skill-category-icon {
+    background: linear-gradient(135deg, #f093fb 0%, #e879f9 100%);
+}
+
+.skill-category-card[data-category="security"] .skill-category-icon {
+    background: linear-gradient(135deg, #4facfe 0%, #3b82f6 100%);
+}
+
+.skill-category-title h4 {
+    margin: 0 0 0.35rem 0;
     color: #1a202c;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
 }
 
-:root[data-theme="dark"] .panel-title h4 {
-        color: #f7fafc;
-    }
-
-.panel-close {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: #4a5568;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+:root[data-theme="dark"] .skill-category-title h4 {
+    color: #f7fafc;
 }
 
-.panel-close:hover {
-    background: #f7fafc;
-    color: #1a202c;
+.skill-level-badge {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
-:root[data-theme="dark"] .panel-close {
-        color: #a0aec0;
-    }
-
-:root[data-theme="dark"] .panel-close:hover {
-        background: #4a5568;
-        color: #f7fafc;
-    }
-
-.panel-content {
-    padding: 2rem;
+.skill-level-badge.expert {
+    background: rgba(251, 191, 36, 0.15);
+    color: #b45309;
 }
 
-.panel-content p {
-    line-height: 1.6;
+.skill-level-badge.advanced {
+    background: rgba(16, 185, 129, 0.15);
+    color: #047857;
+}
+
+.skill-level-badge.intermediate {
+    background: rgba(245, 158, 11, 0.15);
+    color: #92400e;
+}
+
+:root[data-theme="dark"] .skill-level-badge.expert {
+    background: rgba(251, 191, 36, 0.18);
+    color: #fbbf24;
+}
+
+:root[data-theme="dark"] .skill-level-badge.advanced {
+    background: rgba(16, 185, 129, 0.18);
+    color: #34d399;
+}
+
+:root[data-theme="dark"] .skill-level-badge.intermediate {
+    background: rgba(245, 158, 11, 0.18);
+    color: #fbbf24;
 }
 
 .skill-items {
@@ -902,112 +683,51 @@ p {
     font-weight: bold;
 }
 
-/* Animations */
-@keyframes pieSegmentHover {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-    100% {
-        transform: scale(1.1);
-    }
-}
-
-@keyframes panelSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-
-/* Mobile Responsiveness for Pie Chart */
+/* Mobile Responsiveness for Skill Cards */
 @media (max-width: 768px) {
-    .pie-chart-container {
-        padding: 1rem;
-    }
-    
-    .pie-chart {
-        max-width: 300px;
+    .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
     }
 
-    .panel-header {
-        padding: 1rem 1.5rem;
+    .skill-category-card {
+        padding: 1.25rem;
     }
-    
-    .panel-content {
-        padding: 1.5rem;
-    }
-    
+
     .skill-items {
         grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
         gap: 1rem;
     }
-    
+
     .skill-item {
         padding: 0.75rem;
     }
-    
+
     .skill-item i {
         font-size: 1.2rem;
     }
-    
+
     .skill-item span {
         font-size: 0.7rem;
     }
 }
 
 @media (max-width: 480px) {
-    .pie-chart {
-        max-width: 250px;
-    }
-
     .skill-items {
         grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
         gap: 0.75rem;
     }
-    
+
     .skill-item {
         padding: 0.5rem;
     }
-    
+
     .skill-item i {
         font-size: 1rem;
     }
-    
+
     .skill-item span {
         font-size: 0.65rem;
-    }
-    
-    /* Adjust icon positioning for mobile */
-    .segment-content i {
-        font-size: 1.5rem;
-    }
-    
-    .pie-segment[data-category="cloud"] .segment-content i {
-        top: 8%;
-        right: 8%;
-    }
-    
-    .pie-segment[data-category="ai"] .segment-content i {
-        top: 8%;
-        left: 8%;
-    }
-    
-    .pie-segment[data-category="programming"] .segment-content i {
-        bottom: 8%;
-        left: 8%;
-    }
-    
-    .pie-segment[data-category="security"] .segment-content i {
-        bottom: 8%;
-        right: 8%;
     }
 }
 
@@ -2165,7 +1885,7 @@ input:focus,
 select:focus,
 textarea:focus,
 .scroll-to-top:focus-visible,
-.pie-segment:focus-visible,
+.theme-toggle:focus-visible,
 .calendar-day.available:focus-visible {
     outline: 2px solid #5a67d8;
     outline-offset: 2px;
@@ -2177,7 +1897,7 @@ textarea:focus,
 :root[data-theme="dark"] select:focus,
 :root[data-theme="dark"] textarea:focus,
 :root[data-theme="dark"] .scroll-to-top:focus-visible,
-:root[data-theme="dark"] .pie-segment:focus-visible,
+:root[data-theme="dark"] .theme-toggle:focus-visible,
 :root[data-theme="dark"] .calendar-day.available:focus-visible {
         outline-color: #8b9dfb;
     }
