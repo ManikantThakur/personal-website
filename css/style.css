@@ -506,14 +506,33 @@ p {
 
 .segment-text {
     position: absolute;
-    bottom: 15%;
-    left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     z-index: 5;
+}
+
+/* Center the label within each segment's own quadrant */
+.pie-segment[data-category="cloud"] .segment-text {
+    top: 25%;
+    left: 75%;
+}
+
+.pie-segment[data-category="ai"] .segment-text {
+    top: 25%;
+    left: 25%;
+}
+
+.pie-segment[data-category="programming"] .segment-text {
+    top: 75%;
+    left: 25%;
+}
+
+.pie-segment[data-category="security"] .segment-text {
+    top: 75%;
+    left: 75%;
 }
 
 .segment-content i {
