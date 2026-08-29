@@ -1,851 +1,272 @@
-// Dark mode toggle
-const themeToggle = document.getElementById('themeToggle');
-themeToggle.addEventListener('click', () => {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const nextTheme = isDark ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', nextTheme);
-    localStorage.setItem('theme', nextTheme);
-});
+(function () {
+    'use strict';
 
-// Mobile Navigation Toggle
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('nav-menu');
+    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mgvndopo';
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
-
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
-    });
-});
-
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
-
-// Navbar background change on scroll
-const navbar = document.querySelector('.navbar');
-window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 50);
-});
-
-// Contact form handling
-const contactForm = document.getElementById('contactForm');
-
-contactForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    // Get form data
-    const formData = new FormData(contactForm);
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const subject = formData.get('subject');
-    const message = formData.get('message');
-
-    // Simple validation
-    if (!name || !email || !subject || !message) {
-        alert('Please fill in all fields.');
-        return;
+    /* ===============================================================
+       Theme toggle
+       =============================================================== */
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        const syncPressed = () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            themeToggle.setAttribute('aria-pressed', String(isDark));
+        };
+        syncPressed();
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const next = isDark ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            try {
+                localStorage.setItem('theme', next);
+            } catch (e) {
+                /* storage unavailable (private mode) - ignore */
+            }
+            syncPressed();
+        });
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert('Please enter a valid email address.');
-        return;
-    }
-
-    const submitBtn = contactForm.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-
-    submitBtn.textContent = 'Sending...';
-    submitBtn.disabled = true;
-
-    try {
-        formData.append('_subject', `New contact form message: ${subject}`);
-        formData.append('_replyto', email);
-
-        const response = await fetch('https://formspree.io/f/mgvndopo', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
+    /* ===============================================================
+       Mobile navigation
+       =============================================================== */
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+    if (hamburger && navMenu) {
+        const setMenu = (open) => {
+            hamburger.classList.toggle('active', open);
+            navMenu.classList.toggle('active', open);
+            hamburger.setAttribute('aria-expanded', String(open));
+        };
+        hamburger.addEventListener('click', () => {
+            setMenu(!navMenu.classList.contains('active'));
+        });
+        navMenu.querySelectorAll('.nav-link').forEach((link) => {
+            link.addEventListener('click', () => setMenu(false));
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                setMenu(false);
+                hamburger.focus();
             }
         });
-
-        if (!response.ok) {
-            throw new Error(`Formspree responded with ${response.status}`);
-        }
-
-        alert('Thank you for your message! I\'ll get back to you soon.');
-        contactForm.reset();
-    } catch (error) {
-        console.error('Contact form submission failed:', error);
-        alert('Sorry, there was an error sending your message. Please try again or email me directly.');
-    } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
     }
-});
 
-// Intersection Observer for animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
+    /* ===============================================================
+       Scroll-driven UI: navbar style, active link, scroll-to-top
+       (one passive, rAF-throttled listener)
+       =============================================================== */
+    const navbar = document.querySelector('.navbar');
+    const sections = Array.from(document.querySelectorAll('section[id]'));
+    const navLinks = Array.from(document.querySelectorAll('.nav-link'));
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
+    const scrollToTopBtn = document.createElement('button');
+    scrollToTopBtn.type = 'button';
+    scrollToTopBtn.className = 'scroll-to-top';
+    scrollToTopBtn.setAttribute('aria-label', 'Scroll to top');
+    scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up" aria-hidden="true"></i>';
+    scrollToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
     });
-}, observerOptions);
+    document.body.appendChild(scrollToTopBtn);
 
-// Observe elements for animation
-document.addEventListener('DOMContentLoaded', () => {
-    const animatedElements = document.querySelectorAll('.about, .resume, .contact');
-    
-    animatedElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
-});
+    let scrollQueued = false;
+    const handleScroll = () => {
+        scrollQueued = false;
+        const y = window.scrollY;
 
-// Add smooth fade-in effects to hero elements
-window.addEventListener('load', () => {
-    const heroElements = [
-        { selector: '.hero-title', delay: 200 },
-        { selector: '.hero-subtitle', delay: 400 },
-        { selector: '.hero-description', delay: 600 },
-        { selector: '.hero-buttons', delay: 800 },
-        { selector: '.hero-image', delay: 1000 }
-    ];
-    
-    heroElements.forEach(({ selector, delay }) => {
-        const element = document.querySelector(selector);
-        if (element) {
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(30px)';
-            element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-            
-            setTimeout(() => {
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }, delay);
+        if (navbar) navbar.classList.toggle('scrolled', y > 50);
+        scrollToTopBtn.classList.toggle('visible', y > 300);
+
+        let currentId = '';
+        for (const section of sections) {
+            if (y >= section.offsetTop - 200) currentId = section.id;
         }
-    });
-});
-
-// Add scroll to top functionality
-const scrollToTopBtn = document.createElement('button');
-scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-scrollToTopBtn.className = 'scroll-to-top';
-scrollToTopBtn.setAttribute('aria-label', 'Scroll to top');
-document.body.appendChild(scrollToTopBtn);
-
-// Show/hide scroll to top button
-window.addEventListener('scroll', () => {
-    scrollToTopBtn.classList.toggle('visible', window.scrollY > 300);
-});
-
-// Scroll to top functionality
-scrollToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
-
-// Add enhanced hover effects and interactions
-document.addEventListener('DOMContentLoaded', () => {
-    const skillItems = document.querySelectorAll('.skill-item');
-    
-    skillItems.forEach(item => {
-        item.addEventListener('mouseenter', () => {
-            item.style.transform = 'translateY(-5px) scale(1.05)';
-            item.style.boxShadow = '0 10px 25px rgba(102, 126, 234, 0.2)';
-        });
-        
-        item.addEventListener('mouseleave', () => {
-            item.style.transform = 'translateY(0) scale(1)';
-            item.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-        });
-    });
-    
-    // Add click effect to buttons
-    const buttons = document.querySelectorAll('.btn');
-    buttons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            // Create ripple effect
-            const ripple = document.createElement('span');
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-            
-            ripple.style.cssText = `
-                position: absolute;
-                width: ${size}px;
-                height: ${size}px;
-                left: ${x}px;
-                top: ${y}px;
-                background: rgba(255, 255, 255, 0.3);
-                border-radius: 50%;
-                transform: scale(0);
-                animation: ripple 0.6s ease-out;
-                pointer-events: none;
-            `;
-            
-            this.style.position = 'relative';
-            this.style.overflow = 'hidden';
-            this.appendChild(ripple);
-            
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
-        });
-    });
-    
-    // Add CSS for ripple animation
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes ripple {
-            to {
-                transform: scale(2);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(style);
-});
-
-// Add loading animation and page transitions
-window.addEventListener('load', () => {
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.5s ease';
-    
-    setTimeout(() => {
-        document.body.style.opacity = '1';
-    }, 100);
-    
-    // Add stagger effect to timeline items
-    const timelineItems = document.querySelectorAll('.timeline-item');
-    timelineItems.forEach((item, index) => {
-        item.style.opacity = '0';
-        item.style.transform = 'translateX(-30px)';
-        item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        
-        setTimeout(() => {
-            item.style.opacity = '1';
-            item.style.transform = 'translateX(0)';
-        }, 500 + (index * 200));
-    });
-});
-
-// Add parallax effect to hero section
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-    }
-});
-
-// Add active navigation link highlighting
-window.addEventListener('scroll', () => {
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    let current = '';
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (window.scrollY >= (sectionTop - 200)) {
-            current = section.getAttribute('id');
-        }
-    });
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
-    });
-});
-
-// Add CSS for active nav link
-const style = document.createElement('style');
-style.textContent = `
-    .nav-link.active {
-        color: #667eea !important;
-    }
-    .nav-link.active::after {
-        width: 100% !important;
-    }
-`;
-document.head.appendChild(style);
-
-// Calendar Booking System
-class CalendarBooking {
-    constructor() {
-        this.currentDate = new Date();
-        this.selectedDate = null;
-        this.selectedTime = null;
-        this.availableSlots = this.generateAvailableSlots();
-        this.init();
-    }
-
-    init() {
-        this.renderCalendar();
-        this.bindEvents();
-    }
-
-    generateAvailableSlots() {
-        // Generate available time slots for the next 30 days
-        const slots = {};
-        const today = new Date();
-        
-        for (let i = 0; i < 30; i++) {
-            const date = new Date(today);
-            date.setDate(today.getDate() + i);
-            
-            // Skip weekends for now (you can modify this)
-            if (date.getDay() === 0 || date.getDay() === 6) continue;
-            
-            const dateStr = this.formatDate(date);
-            slots[dateStr] = this.generateTimeSlots(date);
-        }
-        
-        return slots;
-    }
-
-    generateTimeSlots(date) {
-        const slots = [];
-        const dateStr = this.formatDate(date);
-
-        // Generate slots from 9 AM to 5 PM
-        for (let h = 9; h <= 17; h++) {
-            if (h === 12) continue; // Skip lunch hour
-
-            // Add 30-minute and 60-minute slots
-            slots.push({
-                time: `${h.toString().padStart(2, '0')}:00`,
-                available: this.isSlotAvailable(dateStr, `${h}:00`),
-                duration: 30
-            });
-
-            if (h < 17) {
-                slots.push({
-                    time: `${h.toString().padStart(2, '0')}:30`,
-                    available: this.isSlotAvailable(dateStr, `${h}:30`),
-                    duration: 30
-                });
-            }
-        }
-
-        return slots;
-    }
-
-    // Deterministic stand-in for real calendar availability: hashes the
-    // date+time so the same slot shows the same availability on every load
-    // instead of a fresh coin flip (Math.random) each time the page opens.
-    isSlotAvailable(dateStr, time) {
-        const str = `${dateStr}-${time}`;
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
-        }
-        return (hash % 10) < 7; // ~70% availability
-    }
-
-    formatDate(date) {
-        return date.toISOString().split('T')[0];
-    }
-
-    renderCalendar() {
-        const calendarGrid = document.getElementById('calendarGrid');
-        const currentMonth = document.getElementById('currentMonth');
-        
-        if (!calendarGrid || !currentMonth) return;
-
-        const year = this.currentDate.getFullYear();
-        const month = this.currentDate.getMonth();
-        
-        currentMonth.textContent = this.currentDate.toLocaleDateString('en-US', { 
-            month: 'long', 
-            year: 'numeric' 
-        });
-
-        // Clear previous calendar
-        calendarGrid.innerHTML = '';
-
-        // Add day headers
-        const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        dayHeaders.forEach(day => {
-            const dayHeader = document.createElement('div');
-            dayHeader.className = 'calendar-day-header';
-            dayHeader.textContent = day;
-            calendarGrid.appendChild(dayHeader);
-        });
-
-        // Get first day of month and number of days
-        const firstDay = new Date(year, month, 1);
-        const lastDay = new Date(year, month + 1, 0);
-        const daysInMonth = lastDay.getDate();
-        const startingDayOfWeek = firstDay.getDay();
-
-        // Add empty cells for days before the first day of the month
-        for (let i = 0; i < startingDayOfWeek; i++) {
-            const emptyDay = document.createElement('div');
-            emptyDay.className = 'calendar-day other-month';
-            emptyDay.textContent = '';
-            calendarGrid.appendChild(emptyDay);
-        }
-
-        // Add days of the month
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dayElement = document.createElement('div');
-            dayElement.className = 'calendar-day';
-            dayElement.textContent = day;
-            
-            const currentDate = new Date(year, month, day);
-            const dateStr = this.formatDate(currentDate);
-            const isToday = this.isToday(currentDate);
-            const isAvailable = this.availableSlots[dateStr] && 
-                               this.availableSlots[dateStr].some(slot => slot.available);
-            
-            if (isToday) {
-                dayElement.classList.add('today');
-            }
-            
-            if (isAvailable) {
-                dayElement.classList.add('available');
-                dayElement.addEventListener('click', () => this.selectDate(currentDate, dayElement));
+        for (const link of navLinks) {
+            const isCurrent = link.getAttribute('href') === `#${currentId}`;
+            link.classList.toggle('active', isCurrent);
+            if (isCurrent) {
+                link.setAttribute('aria-current', 'true');
             } else {
-                dayElement.classList.add('unavailable');
+                link.removeAttribute('aria-current');
             }
-            
-            calendarGrid.appendChild(dayElement);
         }
-    }
-
-    isToday(date) {
-        const today = new Date();
-        return date.toDateString() === today.toDateString();
-    }
-
-    selectDate(date, element) {
-        // Remove previous selection
-        document.querySelectorAll('.calendar-day.selected').forEach(day => {
-            day.classList.remove('selected');
-        });
-
-        // Add selection to clicked day
-        element.classList.add('selected');
-
-        this.selectedDate = date;
-        this.showTimeSlots(date);
-    }
-
-    showTimeSlots(date) {
-        const timeSlotsContainer = document.getElementById('timeSlots');
-        const slotsGrid = document.getElementById('slotsGrid');
-        
-        if (!timeSlotsContainer || !slotsGrid) return;
-
-        const dateStr = this.formatDate(date);
-        const slots = this.availableSlots[dateStr] || [];
-        
-        // Clear previous slots
-        slotsGrid.innerHTML = '';
-        
-        // Add available slots
-        slots.forEach(slot => {
-            if (slot.available) {
-                const slotElement = document.createElement('div');
-                slotElement.className = 'time-slot';
-                slotElement.textContent = slot.time;
-                slotElement.addEventListener('click', () => this.selectTime(slot, slotElement));
-                slotsGrid.appendChild(slotElement);
+    };
+    window.addEventListener(
+        'scroll',
+        () => {
+            if (!scrollQueued) {
+                scrollQueued = true;
+                window.requestAnimationFrame(handleScroll);
             }
+        },
+        { passive: true }
+    );
+    handleScroll();
+
+    /* ===============================================================
+       Reveal-on-scroll for major sections
+       =============================================================== */
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+        const revealEls = document.querySelectorAll('.about, .resume, .contact');
+        const io = new IntersectionObserver(
+            (entries, obs) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'none';
+                        obs.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+        );
+
+        revealEls.forEach((el) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            io.observe(el);
         });
-        
-        timeSlotsContainer.style.display = 'block';
     }
 
-    selectTime(slot, element) {
-        // Remove previous selection
-        document.querySelectorAll('.time-slot.selected').forEach(timeSlot => {
-            timeSlot.classList.remove('selected');
-        });
-
-        // Add selection to clicked slot
-        element.classList.add('selected');
-
-        this.selectedTime = slot;
-        this.showBookingModal();
-    }
-
-    showBookingModal() {
-        const modal = document.getElementById('bookingModal');
-        const summaryDate = document.getElementById('summaryDate');
-        const summaryTime = document.getElementById('summaryTime');
-        const summaryDuration = document.getElementById('summaryDuration');
-        
-        if (!modal || !summaryDate || !summaryTime || !summaryDuration) return;
-
-        // Update summary
-        summaryDate.textContent = this.selectedDate.toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-        summaryTime.textContent = this.selectedTime.time;
-        summaryDuration.textContent = `${this.selectedTime.duration} minutes`;
-
-        modal.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
-
-    hideBookingModal() {
-        const modal = document.getElementById('bookingModal');
-        if (modal) {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-    }
-
-    bindEvents() {
-        // Previous month button
-        const prevBtn = document.getElementById('prevMonth');
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
-                this.currentDate.setMonth(this.currentDate.getMonth() - 1);
-                this.renderCalendar();
+    /* ===============================================================
+       Entrance stagger (hero + timeline)
+       =============================================================== */
+    window.addEventListener('load', () => {
+        if (reduceMotion) return;
+        const stagger = (selector, baseDelay, step) => {
+            document.querySelectorAll(selector).forEach((el, i) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                setTimeout(
+                    () => {
+                        el.style.opacity = '1';
+                        el.style.transform = 'none';
+                    },
+                    baseDelay + i * step
+                );
             });
-        }
-
-        // Next month button
-        const nextBtn = document.getElementById('nextMonth');
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                this.currentDate.setMonth(this.currentDate.getMonth() + 1);
-                this.renderCalendar();
-            });
-        }
-
-        // Close modal button
-        const closeBtn = document.getElementById('closeModal');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => this.hideBookingModal());
-        }
-
-        // Cancel booking button
-        const cancelBtn = document.getElementById('cancelBooking');
-        if (cancelBtn) {
-            cancelBtn.addEventListener('click', () => this.hideBookingModal());
-        }
-
-        // Close modal when clicking outside
-        const modal = document.getElementById('bookingModal');
-        if (modal) {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    this.hideBookingModal();
-                }
-            });
-        }
-
-        // Booking form submission
-        const bookingForm = document.getElementById('bookingForm');
-        if (bookingForm) {
-            bookingForm.addEventListener('submit', (e) => this.handleBookingSubmission(e));
-        }
-    }
-
-    async handleBookingSubmission(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(e.target);
-        const bookingData = {
-            clientName: formData.get('clientName'),
-            clientEmail: formData.get('clientEmail'),
-            clientPhone: formData.get('clientPhone'),
-            sessionType: formData.get('sessionType'),
-            sessionDuration: formData.get('sessionDuration'),
-            meetingType: formData.get('meetingType'),
-            projectDescription: formData.get('projectDescription'),
-            additionalNotes: formData.get('additionalNotes'),
-            selectedDate: this.selectedDate.toISOString(),
-            selectedTime: this.selectedTime.time,
-            bookingId: this.generateBookingId()
         };
+        stagger('.hero-title, .hero-subtitle, .hero-description, .hero-buttons', 150, 120);
+        stagger('.timeline-item', 200, 100);
+    });
 
-        // Show loading state
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Booking...';
-        submitBtn.disabled = true;
-
-        try {
-            // Simulate API call
-            await this.submitBooking(bookingData);
-            
-            // Show success message
-            alert('Booking confirmed! You will receive a confirmation email shortly.');
-            
-            // Reset form and close modal
-            e.target.reset();
-            this.hideBookingModal();
-            this.resetSelection();
-            
-        } catch (error) {
-            alert('Sorry, there was an error processing your booking. Please try again.');
-        } finally {
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }
-    }
-
-    async submitBooking(bookingData) {
-        try {
-            return await this.submitViaFetch(bookingData);
-        } catch (error) {
-            console.error('Booking submission failed:', error);
-            throw error;
-        }
-    }
-
-    async submitViaFetch(bookingData) {
-        // Format the booking data for Formspree
-        const formData = new FormData();
-        
-        // Add all booking fields
-        formData.append('name', bookingData.clientName);
-        formData.append('email', bookingData.clientEmail);
-        formData.append('phone', bookingData.clientPhone || 'Not provided');
-        formData.append('session_type', this.getSessionTypeName(bookingData.sessionType));
-        formData.append('session_duration', `${bookingData.sessionDuration} minutes`);
-        formData.append('meeting_type', this.getMeetingTypeName(bookingData.meetingType));
-        formData.append('project_description', bookingData.projectDescription || 'Not provided');
-        formData.append('additional_notes', bookingData.additionalNotes || 'Not provided');
-        formData.append('booking_date', new Date(bookingData.selectedDate).toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        }));
-        formData.append('booking_time', bookingData.selectedTime);
-        formData.append('booking_id', bookingData.bookingId);
-        formData.append('_subject', `New Booking: ${bookingData.bookingId} - ${bookingData.clientName}`);
-        formData.append('_replyto', bookingData.clientEmail);
-        
-        console.log('Submitting booking data via fetch:', bookingData);
-        
-        // Formspree endpoint for booking submissions
-        const response = await fetch('https://formspree.io/f/mgvndopo', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        
-        console.log('Response status:', response.status);
-        
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('Formspree error response:', errorText);
-            throw new Error(`Failed to submit booking: ${response.status} ${response.statusText}`);
-        }
-        
-        const result = await response.json();
-        console.log('Formspree success response:', result);
-        
-        return { success: true, message: 'Booking submitted successfully!' };
-    }
-
-    getSessionTypeName(type) {
-        const types = {
-            'cloud-architecture': 'Cloud Architecture Review',
-            'ai-strategy': 'AI/GenAI Strategy',
-            'devops-cicd': 'DevOps & CI/CD',
-            'general': 'General Consultation'
-        };
-        return types[type] || type;
-    }
-
-    getMeetingTypeName(type) {
-        const types = {
-            'video': 'Video Call (Google Meet/Zoom)',
-            'phone': 'Phone Call',
-            'in-person': 'In-Person Meeting'
-        };
-        return types[type] || type;
-    }
-
-    generateBookingId() {
-        return 'BK' + Date.now().toString(36).toUpperCase();
-    }
-
-    resetSelection() {
-        this.selectedDate = null;
-        this.selectedTime = null;
-        
-        // Clear visual selections
-        document.querySelectorAll('.calendar-day.selected').forEach(day => {
-            day.classList.remove('selected');
-        });
-        document.querySelectorAll('.time-slot.selected').forEach(slot => {
-            slot.classList.remove('selected');
-        });
-        
-        // Hide time slots
-        const timeSlotsContainer = document.getElementById('timeSlots');
-        if (timeSlotsContainer) {
-            timeSlotsContainer.style.display = 'none';
-        }
-    }
-}
-
-
-
-
-// Initialize calendar booking when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new CalendarBooking();
-    initSkillsInteractions();
-});
-
-// Skill category cards interactions
-function initSkillsInteractions() {
-    const skillItems = document.querySelectorAll('.skill-item');
-    skillItems.forEach(item => {
-        item.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-4px) scale(1.05)';
-            this.style.zIndex = '10';
-        });
-
-        item.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-            this.style.zIndex = '1';
-        });
-
-        // Add click effect for individual items with ripple
-        item.addEventListener('click', function(e) {
-            e.stopPropagation();
-            createRippleEffect(this, e);
-
-            const level = this.getAttribute('data-level');
-            const levelText = getLevelText(level);
-            showTooltip(this, levelText);
+    /* ===============================================================
+       Ripple effect on buttons
+       =============================================================== */
+    const addRipple = (el, event) => {
+        if (reduceMotion) return;
+        const rect = el.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        ripple.style.width = `${size}px`;
+        ripple.style.height = `${size}px`;
+        ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
+        ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
+        el.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+    };
+    document.querySelectorAll('.btn').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            if (typeof e.clientX === 'number' && e.clientX !== 0) addRipple(btn, e);
         });
     });
-}
 
-function createRippleEffect(element, event) {
-    const ripple = document.createElement('span');
-    const rect = element.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    const x = event.clientX - rect.left - size / 2;
-    const y = event.clientY - rect.top - size / 2;
-    
-    ripple.style.cssText = `
-        position: absolute;
-        width: ${size}px;
-        height: ${size}px;
-        left: ${x}px;
-        top: ${y}px;
-        background: rgba(102, 126, 234, 0.3);
-        border-radius: 50%;
-        transform: scale(0);
-        animation: ripple 0.6s ease-out;
-        pointer-events: none;
-        z-index: 1000;
-    `;
-    
-    element.style.position = 'relative';
-    element.style.overflow = 'hidden';
-    element.appendChild(ripple);
-    
-    setTimeout(() => {
-        ripple.remove();
-    }, 600);
-}
+    /* ===============================================================
+       Formspree-backed forms (contact + booking request)
+       =============================================================== */
+    function wireForm(formId, statusId, options) {
+        const form = document.getElementById(formId);
+        const statusEl = document.getElementById(statusId);
+        if (!form) return;
 
+        const setStatus = (msg, kind) => {
+            if (!statusEl) return;
+            statusEl.textContent = msg;
+            statusEl.className = kind ? `form-status ${kind}` : 'form-status';
+        };
 
-function getLevelText(level) {
-    const levels = {
-        'expert': 'Expert Level - 5+ years experience',
-        'advanced': 'Advanced Level - 3-5 years experience', 
-        'intermediate': 'Intermediate Level - 1-3 years experience'
-    };
-    return levels[level] || 'Skill Level';
-}
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = new FormData(form);
 
-function showTooltip(element, text) {
-    // Remove existing tooltip
-    const existingTooltip = document.querySelector('.skill-tooltip');
-    if (existingTooltip) {
-        existingTooltip.remove();
-    }
-    
-    // Create tooltip
-    const tooltip = document.createElement('div');
-    tooltip.className = 'skill-tooltip';
-    tooltip.textContent = text;
-    tooltip.style.cssText = `
-        position: absolute;
-        background: #1a202c;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 6px;
-        font-size: 0.8rem;
-        white-space: nowrap;
-        z-index: 1000;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        top: -40px;
-        left: 50%;
-        transform: translateX(-50%);
-    `;
-    
-    element.style.position = 'relative';
-    element.appendChild(tooltip);
-    
-    // Show tooltip
-    setTimeout(() => {
-        tooltip.style.opacity = '1';
-    }, 100);
-    
-    // Hide tooltip after 3 seconds
-    setTimeout(() => {
-        tooltip.style.opacity = '0';
-        setTimeout(() => {
-            if (tooltip.parentNode) {
-                tooltip.parentNode.removeChild(tooltip);
+            // Honeypot: a filled _gotcha means a bot. Pretend success, send nothing.
+            if ((data.get('_gotcha') || '').toString().trim() !== '') {
+                setStatus(options.successMsg, 'success');
+                form.reset();
+                return;
             }
-        }, 300);
-    }, 3000);
-}
+
+            const required = options.required || [];
+            for (const field of required) {
+                if (!(data.get(field) || '').toString().trim()) {
+                    setStatus('Please fill in all required fields.', 'error');
+                    return;
+                }
+            }
+            const email = (data.get('email') || '').toString().trim();
+            if (email && !EMAIL_RE.test(email)) {
+                setStatus('Please enter a valid email address.', 'error');
+                return;
+            }
+
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn ? submitBtn.textContent : '';
+            if (submitBtn) {
+                submitBtn.textContent = 'Sending…';
+                submitBtn.disabled = true;
+            }
+            setStatus('', '');
+
+            try {
+                if (options.subject) data.append('_subject', options.subject(data));
+                const res = await fetch(FORMSPREE_ENDPOINT, {
+                    method: 'POST',
+                    body: data,
+                    headers: { Accept: 'application/json' }
+                });
+                if (!res.ok) throw new Error(`Formspree responded with ${res.status}`);
+                setStatus(options.successMsg, 'success');
+                form.reset();
+            } catch (err) {
+                console.error(`${formId} submission failed:`, err);
+                setStatus(
+                    'Sorry, something went wrong. Please email me directly instead.',
+                    'error'
+                );
+            } finally {
+                if (submitBtn) {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
+            }
+        });
+    }
+
+    wireForm('contactForm', 'contactStatus', {
+        required: ['name', 'email', 'subject', 'message'],
+        subject: (d) => `New contact message: ${d.get('subject')}`,
+        successMsg: "Thanks! Your message has been sent — I'll get back to you soon."
+    });
+
+    wireForm('bookingForm', 'bookingStatus', {
+        required: ['name', 'email', 'session_type', 'duration', 'meeting_type'],
+        subject: (d) => `New session request — ${d.get('name') || 'unknown'}`,
+        successMsg:
+            "Request sent. I'll confirm a slot with you by email, in your timezone, within one business day."
+    });
+
+    /* ===============================================================
+       Preferred-date input: don't allow past dates
+       =============================================================== */
+    const preferredDate = document.getElementById('preferredDate');
+    if (preferredDate) {
+        const now = new Date();
+        const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+        preferredDate.min = local.toISOString().slice(0, 10);
+    }
+})();
