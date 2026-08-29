@@ -1,704 +1,1083 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Personal website showcasing professional experience and skills">
-    <meta name="keywords" content="developer, software engineer, resume, portfolio">
-    <meta name="author" content="Manikant Thakur">
-    <title>Manikant Thakur - Sr. Architect - Cloud, DevOps & AI</title>
-    <script>
-        // Set theme before first paint to avoid a flash of the wrong theme.
-        (function () {
-            const stored = localStorage.getItem('theme');
-            const theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            document.documentElement.setAttribute('data-theme', theme);
-        })();
-    </script>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <a href="#home">Manikant Thakur</a>
-            </div>
-            <div class="nav-menu" id="nav-menu">
-                <a href="#home" class="nav-link">Home</a>
-                <a href="#about" class="nav-link">About</a>
-                <a href="#resume" class="nav-link">Resume</a>
-                <a href="#booking" class="nav-link">Book Session</a>
-                <a href="#contact" class="nav-link">Contact</a>
-            </div>
-            <div class="nav-controls">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-                    <i class="fas fa-moon"></i>
-                    <i class="fas fa-sun"></i>
-                </button>
-                <div class="hamburger" id="hamburger">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Manikant Thakur — Senior Architect specializing in cloud infrastructure, DevOps, CI/CD, and GenAI/RAG systems, with 16+ years of experience."
+        />
+        <meta name="author" content="Manikant Thakur" />
+        <meta name="theme-color" content="#667eea" />
+        <meta name="color-scheme" content="light dark" />
+        <title>Manikant Thakur - Sr. Architect - Cloud, DevOps &amp; AI</title>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1 class="hero-title">Hi, I'm <span class="highlight">Manikant Thakur</span></h1>
-                    <p class="hero-subtitle">Sr. Architect</p>
-                    <p class="hero-description">
-                        Senior Architect with 16.5 years of experience designing scalable, secure, and efficient cloud infrastructure solutions. 
-                        Currently specializing in GenAI, RAG applications, and AI technologies while architecting innovative strategies that drive business objectives and operational excellence.
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="#resume" class="btn btn-primary">View Resume</a>
-                        <a href="#contact" class="btn btn-secondary">Get In Touch</a>
-                    </div>
+        <!-- Icons -->
+        <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+        <link rel="alternate icon" href="favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+        <!-- Social sharing -->
+        <meta property="og:type" content="website" />
+        <meta
+            property="og:title"
+            content="Manikant Thakur — Sr. Architect (Cloud, DevOps &amp; AI)"
+        />
+        <meta
+            property="og:description"
+            content="Senior Architect specializing in cloud infrastructure, DevOps, CI/CD, and GenAI/RAG systems."
+        />
+        <meta property="og:url" content="https://www.thakur.io/" />
+        <meta property="og:image" content="https://www.thakur.io/assets/image.jpeg" />
+        <meta property="og:image:width" content="800" />
+        <meta property="og:image:height" content="800" />
+        <meta property="og:image:alt" content="Portrait of Manikant Thakur" />
+        <meta name="twitter:card" content="summary" />
+        <meta
+            name="twitter:title"
+            content="Manikant Thakur — Sr. Architect (Cloud, DevOps &amp; AI)"
+        />
+        <meta
+            name="twitter:description"
+            content="Senior Architect specializing in cloud infrastructure, DevOps, CI/CD, and GenAI/RAG systems."
+        />
+        <meta name="twitter:image" content="https://www.thakur.io/assets/image.jpeg" />
+
+        <script>
+            // Set theme before first paint to avoid a flash of the wrong theme.
+            (function () {
+                try {
+                    var stored = localStorage.getItem('theme');
+                    var theme =
+                        stored ||
+                        (window.matchMedia('(prefers-color-scheme: dark)').matches
+                            ? 'dark'
+                            : 'light');
+                    document.documentElement.setAttribute('data-theme', theme);
+                } catch (e) {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                }
+            })();
+        </script>
+        <link
+            rel="preload"
+            href="assets/fonts/inter-latin.woff2"
+            as="font"
+            type="font/woff2"
+            crossorigin
+        />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="assets/fontawesome/css/all.min.css" />
+        <script src="js/main.js" defer></script>
+
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "Person",
+                "name": "Manikant Thakur",
+                "jobTitle": "Senior Architect",
+                "url": "https://www.thakur.io/",
+                "image": "https://www.thakur.io/assets/image.jpeg",
+                "description": "Senior Architect specializing in cloud infrastructure, DevOps, CI/CD, and GenAI/RAG systems.",
+                "worksFor": { "@type": "Organization", "name": "Visionet Systems" },
+                "knowsAbout": [
+                    "Cloud Architecture",
+                    "DevOps",
+                    "CI/CD",
+                    "Kubernetes",
+                    "Generative AI",
+                    "Retrieval-Augmented Generation",
+                    "AWS",
+                    "Google Cloud",
+                    "Microsoft Azure"
+                ],
+                "sameAs": [
+                    "https://www.linkedin.com/in/manikantthakur/",
+                    "https://github.com/manikantthakur"
+                ]
+            }
+        </script>
+    </head>
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="#home">Manikant Thakur</a>
                 </div>
-                <div class="hero-image">
-                    <div class="profile-image">
-                        <img src="assets/image.jpeg" alt="Manikant Thakur" class="profile-photo">
-                    </div>
+                <div class="nav-menu" id="nav-menu">
+                    <a href="#home" class="nav-link">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#resume" class="nav-link">Resume</a>
+                    <a href="#booking" class="nav-link">Book Session</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
+                <div class="nav-controls">
+                    <button
+                        class="theme-toggle"
+                        id="themeToggle"
+                        type="button"
+                        aria-label="Toggle dark mode"
+                        aria-pressed="false"
+                    >
+                        <i class="fas fa-moon" aria-hidden="true"></i>
+                        <i class="fas fa-sun" aria-hidden="true"></i>
+                    </button>
+                    <button
+                        class="hamburger"
+                        id="hamburger"
+                        type="button"
+                        aria-label="Toggle navigation menu"
+                        aria-controls="nav-menu"
+                        aria-expanded="false"
+                    >
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
                 </div>
             </div>
-        </div>
-    </section>
+        </nav>
 
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>
-                        I'm a Senior Architect with 16.5 years of experience in cloud infrastructure, DevOps, and emerging AI technologies. 
-                        Currently working in GenAI and AI teams, specializing in designing intelligent solutions including RAG applications that drive business growth and operational excellence.
-                    </p>
-                    <p>
-                        Currently working at Visionet Systems as a Senior Architect in Cloud, DevOps, and CI/CD, with recent transition to the AI team. 
-                        I'm applying my expertise in AWS, GCP, Azure, Azure Bicep, Docker, Kubernetes, and GenAI technologies to architect 
-                        next-generation intelligent solutions. I'm passionate about leveraging cutting-edge AI technologies to solve 
-                        complex enterprise challenges and drive digital transformation.
-                    </p>
-                </div>
-                <div class="skills">
-                    <h3>Core Skills</h3>
-                    <p class="skills-intro">An overview of my core technology areas and the tools within each</p>
-
-                    <div class="skills-grid">
-                        <div class="skill-category-card" data-category="cloud">
-                            <div class="skill-category-header">
-                                <div class="skill-category-icon">
-                                    <i class="fas fa-cloud"></i>
-                                </div>
-                                <div class="skill-category-title">
-                                    <h4>Cloud & DevOps</h4>
-                                    <span class="skill-level-badge expert">Expert &middot; 8+ years</span>
-                                </div>
-                            </div>
-                            <div class="skill-items">
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fab fa-aws"></i>
-                                    <span>AWS</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fab fa-google"></i>
-                                    <span>GCP</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fab fa-microsoft"></i>
-                                    <span>Azure</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fab fa-docker"></i>
-                                    <span>Docker</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-cubes"></i>
-                                    <span>Kubernetes</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-tools"></i>
-                                    <span>Terraform</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-git-alt"></i>
-                                    <span>GitLab</span>
-                                </div>
-                                <div class="skill-item" data-level="advanced">
-                                    <i class="fas fa-server"></i>
-                                    <span>Jenkins</span>
-                                </div>
+        <main id="main" tabindex="-1">
+            <!-- Hero Section -->
+            <section id="home" class="hero">
+                <div class="hero-container">
+                    <div class="hero-content">
+                        <div class="hero-text">
+                            <h1 class="hero-title">
+                                Hi, I'm <span class="highlight">Manikant Thakur</span>
+                            </h1>
+                            <p class="hero-subtitle">Sr. Architect</p>
+                            <p class="hero-description">
+                                Senior Architect with 16.5 years of experience designing scalable,
+                                secure, and efficient cloud infrastructure solutions. Currently
+                                specializing in GenAI, RAG applications, and AI technologies while
+                                architecting innovative strategies that drive business objectives
+                                and operational excellence.
+                            </p>
+                            <div class="hero-buttons">
+                                <a href="#resume" class="btn btn-primary">View Resume</a>
+                                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
                             </div>
                         </div>
-
-                        <div class="skill-category-card" data-category="ai">
-                            <div class="skill-category-header">
-                                <div class="skill-category-icon">
-                                    <i class="fas fa-brain"></i>
-                                </div>
-                                <div class="skill-category-title">
-                                    <h4>AI & ML</h4>
-                                    <span class="skill-level-badge expert">Expert &middot; 4 years</span>
-                                </div>
-                            </div>
-                            <div class="skill-items">
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-robot"></i>
-                                    <span>GenAI</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-brain"></i>
-                                    <span>LangChain</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-project-diagram"></i>
-                                    <span>LangGraph</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-database"></i>
-                                    <span>Vector DB</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-search"></i>
-                                    <span>RAG</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-file-alt"></i>
-                                    <span>Document AI</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-robot"></i>
-                                    <span>AI Agents</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-cogs"></i>
-                                    <span>AgentVerse</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="skill-category-card" data-category="programming">
-                            <div class="skill-category-header">
-                                <div class="skill-category-icon">
-                                    <i class="fas fa-code"></i>
-                                </div>
-                                <div class="skill-category-title">
-                                    <h4>Programming</h4>
-                                    <span class="skill-level-badge expert">Expert &middot; 10+ years</span>
-                                </div>
-                            </div>
-                            <div class="skill-items">
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fab fa-python"></i>
-                                    <span>Python</span>
-                                </div>
-                                <div class="skill-item" data-level="advanced">
-                                    <i class="fab fa-js"></i>
-                                    <span>JavaScript</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-code"></i>
-                                    <span>Live Coding</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-search-plus"></i>
-                                    <span>Code Review</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-toolbox"></i>
-                                    <span>ADK</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-exchange-alt"></i>
-                                    <span>A2A</span>
-                                </div>
-                                <div class="skill-item" data-level="expert">
-                                    <i class="fas fa-sitemap"></i>
-                                    <span>Architecture</span>
-                                </div>
-                                <div class="skill-item" data-level="advanced">
-                                    <i class="fas fa-tools"></i>
-                                    <span>Dev Tools</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="skill-category-card" data-category="security">
-                            <div class="skill-category-header">
-                                <div class="skill-category-icon">
-                                    <i class="fas fa-shield-alt"></i>
-                                </div>
-                                <div class="skill-category-title">
-                                    <h4>Security</h4>
-                                    <span class="skill-level-badge advanced">Advanced &middot; 5 years</span>
-                                </div>
-                            </div>
-                            <div class="skill-items">
-                                <div class="skill-item" data-level="advanced">
-                                    <i class="fas fa-shield-alt"></i>
-                                    <span>Nessus</span>
-                                </div>
-                                <div class="skill-item" data-level="advanced">
-                                    <i class="fas fa-search"></i>
-                                    <span>Burp Suite</span>
-                                </div>
-                                <div class="skill-item" data-level="intermediate">
-                                    <i class="fas fa-network-wired"></i>
-                                    <span>Wireshark</span>
-                                </div>
+                        <div class="hero-image">
+                            <div class="profile-image">
+                                <picture>
+                                    <source srcset="assets/image.avif" type="image/avif" />
+                                    <source srcset="assets/image.webp" type="image/webp" />
+                                    <img
+                                        src="assets/image.jpeg"
+                                        alt="Portrait of Manikant Thakur"
+                                        class="profile-photo"
+                                        width="800"
+                                        height="800"
+                                        decoding="async"
+                                    />
+                                </picture>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- Resume Section -->
-    <section id="resume" class="resume">
-        <div class="container">
-            <h2 class="section-title">Resume</h2>
-            <div class="resume-content">
-                <div class="resume-download">
-                    <a href="assets/Manikant_Thakur_Resume.pdf" class="btn btn-primary" download>
-                        <i class="fas fa-download"></i>
-                        Download PDF Resume
-                    </a>
-                </div>
-                
-                <div class="resume-sections">
-                    <div class="resume-section">
-                        <h3>Experience</h3>
-                        <div class="timeline">
-                            <div class="timeline-item">
-                                <div class="timeline-date">Jul 2024 - Present</div>
-                                <div class="timeline-content">
-                                    <h4>Senior Architect - Cloud, DevOps, CI/CD & AI</h4>
-                                    <p class="company">Visionet Systems</p>
-                                    <ul>
-                                        <li>Leading architectural decisions for cloud infrastructure, DevOps, and CI/CD practices</li>
-                                        <li>Transitioned to AI team, specializing in GenAI technologies and RAG applications</li>
-                                        <li>Expert in LangChain, LangGraph, Vector Databases, and document extraction</li>
-                                        <li>Designed and implemented RAG applications for enterprise clients</li>
-                                        <li>Architecting, designing, and developing AgentVerse - enterprise-scale AI agent platform with MCP architecture, ADK, and A2A</li>
-                                        <li>Developing vive coding and vive reviewing skills through daily use and practice - essential expertise for modern AI-based development</li>
-                                        <li>Expert in Azure Bicep for Infrastructure as Code implementations</li>
-                                        <li>Implementing AI-driven automation and best practices in cloud security</li>
-                                        <li>Mentoring teams and driving technical excellence in AI and cloud domains</li>
-                                    </ul>
+            <!-- About Section -->
+            <section id="about" class="about">
+                <div class="container">
+                    <h2 class="section-title">About Me</h2>
+                    <div class="about-content">
+                        <div class="about-text">
+                            <p>
+                                I'm a Senior Architect with 16.5 years of experience in cloud
+                                infrastructure, DevOps, and emerging AI technologies. Currently
+                                working in GenAI and AI teams, specializing in designing intelligent
+                                solutions including RAG applications that drive business growth and
+                                operational excellence.
+                            </p>
+                            <p>
+                                Currently working at Visionet Systems as a Senior Architect in
+                                Cloud, DevOps, and CI/CD, with recent transition to the AI team. I'm
+                                applying my expertise in AWS, GCP, Azure, Azure Bicep, Docker,
+                                Kubernetes, and GenAI technologies to architect next-generation
+                                intelligent solutions. I'm passionate about leveraging cutting-edge
+                                AI technologies to solve complex enterprise challenges and drive
+                                digital transformation.
+                            </p>
+                        </div>
+                        <div class="skills">
+                            <h3>Core Skills</h3>
+                            <p class="skills-intro">
+                                An overview of my core technology areas and the tools within each
+                            </p>
+
+                            <div class="skills-grid">
+                                <div class="skill-category-card" data-category="cloud">
+                                    <div class="skill-category-header">
+                                        <div class="skill-category-icon">
+                                            <i class="fas fa-cloud" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="skill-category-title">
+                                            <h4>Cloud &amp; DevOps</h4>
+                                            <span class="skill-level-badge expert"
+                                                >Expert &middot; 8+ years</span
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="skill-items">
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fab fa-aws" aria-hidden="true"></i>
+                                            <span>AWS</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fab fa-google" aria-hidden="true"></i>
+                                            <span>GCP</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fab fa-microsoft" aria-hidden="true"></i>
+                                            <span>Azure</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fab fa-docker" aria-hidden="true"></i>
+                                            <span>Docker</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-cubes" aria-hidden="true"></i>
+                                            <span>Kubernetes</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-tools" aria-hidden="true"></i>
+                                            <span>Terraform</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-git-alt" aria-hidden="true"></i>
+                                            <span>GitLab</span>
+                                        </div>
+                                        <div class="skill-item" data-level="advanced">
+                                            <i class="fas fa-server" aria-hidden="true"></i>
+                                            <span>Jenkins</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-date">Jan 2023 - 2024</div>
-                                <div class="timeline-content">
-                                    <h4>Full-Time Parental Break - ML Research & Development</h4>
-                                    <p class="company">Personal Development & Family Care</p>
-                                    <ul>
-                                        <li>Dedicated full-time to childcare responsibilities and family support</li>
-                                        <li>Acquired practical expertise in machine learning during the break</li>
-                                        <li>Developed VersaVox - Python-based ML models for audio and text transcription</li>
-                                        <li>Achieved 50% accuracy in Indic language classification</li>
-                                        <li>Open-sourced ML models for audio and text transcription tasks</li>
-                                    </ul>
+
+                                <div class="skill-category-card" data-category="ai">
+                                    <div class="skill-category-header">
+                                        <div class="skill-category-icon">
+                                            <i class="fas fa-brain" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="skill-category-title">
+                                            <h4>AI &amp; ML</h4>
+                                            <span class="skill-level-badge expert"
+                                                >Expert &middot; 4 years</span
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="skill-items">
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-robot" aria-hidden="true"></i>
+                                            <span>GenAI</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-brain" aria-hidden="true"></i>
+                                            <span>LangChain</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i
+                                                class="fas fa-project-diagram"
+                                                aria-hidden="true"
+                                            ></i>
+                                            <span>LangGraph</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-database" aria-hidden="true"></i>
+                                            <span>Vector DB</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-search" aria-hidden="true"></i>
+                                            <span>RAG</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-file-alt" aria-hidden="true"></i>
+                                            <span>Document AI</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-robot" aria-hidden="true"></i>
+                                            <span>AI Agents</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-cogs" aria-hidden="true"></i>
+                                            <span>AgentVerse</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-date">Oct 2018 - Dec 2022</div>
-                                <div class="timeline-content">
-                                    <h4>Lead DevOps, Infra and Tools</h4>
-                                    <p class="company">Slang Labs, Bengaluru</p>
-                                    <ul>
-                                        <li>Optimized Docker build process, achieving 93% reduction in build time and 76% reduction in image size</li>
-                                        <li>Enhanced CI/CD processes with GitLab CI/CD, resulting in 30% reduction in deployment time</li>
-                                        <li>Implemented auto-deployment reducing manual intervention by 90%</li>
-                                        <li>Achieved 99.99% uptime for SlangInfra, improving system reliability by 20%</li>
-                                        <li>Migrated stateless microservices to Cloud Run, reducing infrastructure costs by 60%</li>
-                                    </ul>
+
+                                <div class="skill-category-card" data-category="programming">
+                                    <div class="skill-category-header">
+                                        <div class="skill-category-icon">
+                                            <i class="fas fa-code" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="skill-category-title">
+                                            <h4>Programming</h4>
+                                            <span class="skill-level-badge expert"
+                                                >Expert &middot; 10+ years</span
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="skill-items">
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fab fa-python" aria-hidden="true"></i>
+                                            <span>Python</span>
+                                        </div>
+                                        <div class="skill-item" data-level="advanced">
+                                            <i class="fab fa-js" aria-hidden="true"></i>
+                                            <span>JavaScript</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-code" aria-hidden="true"></i>
+                                            <span>Live Coding</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-search-plus" aria-hidden="true"></i>
+                                            <span>Code Review</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-toolbox" aria-hidden="true"></i>
+                                            <span>ADK</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-exchange-alt" aria-hidden="true"></i>
+                                            <span>A2A</span>
+                                        </div>
+                                        <div class="skill-item" data-level="expert">
+                                            <i class="fas fa-sitemap" aria-hidden="true"></i>
+                                            <span>Architecture</span>
+                                        </div>
+                                        <div class="skill-item" data-level="advanced">
+                                            <i class="fas fa-tools" aria-hidden="true"></i>
+                                            <span>Dev Tools</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-date">Jan 2017 - Sep 2018</div>
-                                <div class="timeline-content">
-                                    <h4>Software Engineering Lead | Principal Engineer</h4>
-                                    <p class="company">xcelerator, HEd Experts, Bengaluru</p>
-                                    <ul>
-                                        <li>Leveraged DevOps tools (Docker, Kubernetes, AWS, GCP) to streamline infrastructure</li>
-                                        <li>Built applications with React, Phoenix Framework, Elixir, and PostgreSQL</li>
-                                        <li>Containerized entire tech stack and migrated to AWS, reducing costs by 40%</li>
-                                        <li>Led two teams with 80-90% success rate in parallel sprints</li>
-                                        <li>Implemented Keycloak-based authentication system for enhanced security</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-date">May 2015 - Jan 2017</div>
-                                <div class="timeline-content">
-                                    <h4>VP Software Engineering | Senior Software Developer</h4>
-                                    <p class="company">Thinqbot Technologies, Bengaluru</p>
-                                    <ul>
-                                        <li>Led engineering teams in cloud/IoT gateway infrastructure development</li>
-                                        <li>Implemented Contiki OS on TI's cc2538 SoC with real-time sensors/actuators</li>
-                                        <li>Designed distributed Cloud infrastructure on AWS for scalable solutions</li>
-                                        <li>Developed microservices using Python, Elasticsearch, Django, and REST API</li>
-                                        <li>Designed Ubuntu-based Gateway for hardware-cloud connectivity</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-date">Jul 2012 - Apr 2015</div>
-                                <div class="timeline-content">
-                                    <h4>Software Engineer (Network Protocol)</h4>
-                                    <p class="company">Paxterra Solutions Inc, Bengaluru</p>
-                                    <ul>
-                                        <li>Implemented SDN technologies including OpenFlow, OF-Config, and OpenFlow Notifications Framework</li>
-                                        <li>Conducted protocol mutation and DoS attacks as part of network penetration testing</li>
-                                        <li>Developed Perl and Python scripts for network security testing</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-date">Sep 2009 - Jan 2012</div>
-                                <div class="timeline-content">
-                                    <h4>Network Engineer | System Admin</h4>
-                                    <p class="company">Kochar Tech, Kolkata</p>
-                                    <ul>
-                                        <li>Configured and managed Cisco networking equipment (switches, routers, PIX firewall)</li>
-                                        <li>Conducted network cable management and performed log analysis</li>
-                                        <li>Automated OS updates for 500+ HP Mini PCs with 99% success rate</li>
-                                        <li>Expert in Windows Command Prompt and PowerShell administration</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-date">Nov 2008 - Aug 2009</div>
-                                <div class="timeline-content">
-                                    <h4>L1 Technical Support Engineer</h4>
-                                    <p class="company">Kaizen TI Services Pvt. Ltd., Kolkata</p>
-                                    <ul>
-                                        <li>Achieved resolution time of under 60 minutes for 90% of tickets</li>
-                                        <li>Proficient in Microsoft Server 2003 and Altiris Deployment Server Administration</li>
-                                        <li>Expert in Windows Group Policy and Windows Registry management</li>
-                                    </ul>
+
+                                <div class="skill-category-card" data-category="security">
+                                    <div class="skill-category-header">
+                                        <div class="skill-category-icon">
+                                            <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="skill-category-title">
+                                            <h4>Security</h4>
+                                            <span class="skill-level-badge advanced"
+                                                >Advanced &middot; 5 years</span
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="skill-items">
+                                        <div class="skill-item" data-level="advanced">
+                                            <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                                            <span>Nessus</span>
+                                        </div>
+                                        <div class="skill-item" data-level="advanced">
+                                            <i class="fas fa-search" aria-hidden="true"></i>
+                                            <span>Burp Suite</span>
+                                        </div>
+                                        <div class="skill-item" data-level="intermediate">
+                                            <i class="fas fa-network-wired" aria-hidden="true"></i>
+                                            <span>Wireshark</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="resume-section">
-                    <h3>Key Projects</h3>
-                    <div class="project-item">
-                        <h4>AgentVerse - Enterprise-Scale AI Agent Platform</h4>
-                        <p class="project-period">August 2025 - Present</p>
-                        <p class="project-description">
-                            Architecting, designing, and developing AgentVerse, an enterprise-scale AI agent platform built on MCP (Model Context Protocol) 
-                            architecture with ADK (Agent Development Kit) and A2A (Agent-to-Agent) communication capabilities. The solution enables organizations 
-                            to deploy, manage, and orchestrate multiple AI agents for complex business workflows. Features include advanced agent communication 
-                            protocols, task distribution, monitoring, ADK for rapid agent development, and scalable infrastructure for handling enterprise-level 
-                            AI agent deployments with seamless A2A interactions.
-                        </p>
-                        <div class="project-links">
-                            <a href="#contact" class="btn btn-secondary">
-                                <i class="fas fa-envelope"></i> Contact for Details
+            </section>
+
+            <!-- Resume Section -->
+            <section id="resume" class="resume">
+                <div class="container">
+                    <h2 class="section-title">Resume</h2>
+                    <div class="resume-content">
+                        <div class="resume-download">
+                            <a
+                                href="assets/Manikant_Thakur_Resume.pdf"
+                                class="btn btn-primary"
+                                download
+                            >
+                                <i class="fas fa-download" aria-hidden="true"></i>
+                                Download PDF Resume
                             </a>
                         </div>
-                    </div>
-                    <div class="project-item">
-                        <h4>RAG Application Design & Implementation</h4>
-                        <p class="project-period">2024 - Present</p>
-                        <p class="project-description">
-                            Designed and implemented comprehensive RAG (Retrieval-Augmented Generation) applications using LangChain, 
-                            LangGraph, and Vector Databases. Built intelligent document extraction and processing systems that enable 
-                            enterprise clients to leverage their data for AI-powered insights and automation. The solution includes 
-                            advanced document parsing, vector embeddings, and context-aware response generation.
-                        </p>
-                        <div class="project-links">
-                            <a href="#contact" class="btn btn-secondary">
-                                <i class="fas fa-envelope"></i> Contact for Details
-                            </a>
-                        </div>
-                    </div>
-                    <div class="project-item">
-                        <h4>VersaVox - ML Research & Development</h4>
-                        <p class="project-period">Ongoing Research and Development</p>
-                        <p class="project-description">
-                            Developed a range of Python-based ML models, both open-source and proprietary, 
-                            aimed at addressing various challenges in audio and text transcription domains. 
-                            Designed open-source ML models specifically tailored for audio and text transcription tasks, 
-                            achieving an accuracy rate of 50% in Indic language classification.
-                        </p>
-                        <div class="project-links">
-                            <a href="https://github.com/manikantThakur/VersaVox" target="_blank" class="btn btn-secondary">
-                                <i class="fab fa-github"></i> View on GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Booking Section -->
-    <section id="booking" class="booking">
-        <div class="container">
-            <h2 class="section-title">Book a Session</h2>
-            <div class="booking-content">
-                <div class="booking-info">
-                    <h3>Schedule a Consultation</h3>
-                    <p>Ready to discuss your cloud infrastructure, DevOps, or AI project? Book a session with me to explore how we can work together.</p>
-                    
-                    <div class="session-types">
-                        <div class="session-type">
-                            <i class="fas fa-cloud"></i>
-                            <h4>Cloud Architecture Review</h4>
-                            <p>30-60 minutes</p>
-                            <span class="price">Free Consultation</span>
-                        </div>
-                        <div class="session-type">
-                            <i class="fas fa-robot"></i>
-                            <h4>AI/GenAI Strategy</h4>
-                            <p>45-90 minutes</p>
-                            <span class="price">Free Consultation</span>
-                        </div>
-                        <div class="session-type">
-                            <i class="fas fa-tools"></i>
-                            <h4>DevOps & CI/CD</h4>
-                            <p>30-60 minutes</p>
-                            <span class="price">Free Consultation</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="calendar-container">
-                    <div class="calendar-header">
-                        <h3>Select Available Time</h3>
-                        <div class="timezone-info">
-                            <i class="fas fa-clock"></i>
-                            <span>All times shown in IST (India Standard Time)</span>
-                        </div>
-                    </div>
-                    
-                    <div class="calendar-wrapper">
-                        <div class="calendar-nav">
-                            <button id="prevMonth" class="nav-btn">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
-                            <h4 id="currentMonth"></h4>
-                            <button id="nextMonth" class="nav-btn">
-                                <i class="fas fa-chevron-right"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="calendar-grid" id="calendarGrid">
-                            <!-- Calendar will be generated by JavaScript -->
-                        </div>
-                    </div>
-                    
-                    <div class="time-slots" id="timeSlots" style="display: none;">
-                        <h4>Available Times</h4>
-                        <div class="slots-grid" id="slotsGrid">
-                            <!-- Time slots will be populated by JavaScript -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Booking Form Modal -->
-            <div id="bookingModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>Confirm Your Booking</h3>
-                        <button class="close-btn" id="closeModal">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <form id="bookingForm" class="booking-form">
-                        <div class="form-group">
-                            <label for="clientName">Full Name *</label>
-                            <input type="text" id="clientName" name="clientName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="clientEmail">Email Address *</label>
-                            <input type="email" id="clientEmail" name="clientEmail" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="clientPhone">Phone Number</label>
-                            <input type="tel" id="clientPhone" name="clientPhone">
-                        </div>
-                        <div class="form-group">
-                            <label for="sessionType">Session Type *</label>
-                            <select id="sessionType" name="sessionType" required>
-                                <option value="">Select session type</option>
-                                <option value="cloud-architecture">Cloud Architecture Review</option>
-                                <option value="ai-strategy">AI/GenAI Strategy</option>
-                                <option value="devops-cicd">DevOps & CI/CD</option>
-                                <option value="general">General Consultation</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="sessionDuration">Duration *</label>
-                            <select id="sessionDuration" name="sessionDuration" required>
-                                <option value="">Select duration</option>
-                                <option value="30">30 minutes</option>
-                                <option value="60">60 minutes</option>
-                                <option value="90">90 minutes</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="meetingType">Meeting Type *</label>
-                            <select id="meetingType" name="meetingType" required>
-                                <option value="">Select meeting type</option>
-                                <option value="video">Video Call (Google Meet/Zoom)</option>
-                                <option value="phone">Phone Call</option>
-                                <option value="in-person">In-Person (if local)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="projectDescription">Project Description</label>
-                            <textarea id="projectDescription" name="projectDescription" rows="4" placeholder="Briefly describe your project or what you'd like to discuss..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="additionalNotes">Additional Notes</label>
-                            <textarea id="additionalNotes" name="additionalNotes" rows="3" placeholder="Any specific questions or topics you'd like to cover..."></textarea>
-                        </div>
-                        <div class="booking-summary">
-                            <h4>Booking Summary</h4>
-                            <div class="summary-item">
-                                <span>Date:</span>
-                                <span id="summaryDate"></span>
+                        <div class="resume-sections">
+                            <div class="resume-section">
+                                <h3>Experience</h3>
+                                <div class="timeline">
+                                    <div class="timeline-item">
+                                        <div class="timeline-date">Jul 2024 - Present</div>
+                                        <div class="timeline-content">
+                                            <h4>
+                                                Senior Architect - Cloud, DevOps, CI/CD &amp; AI
+                                            </h4>
+                                            <p class="company">Visionet Systems</p>
+                                            <ul>
+                                                <li>
+                                                    Leading architectural decisions for cloud
+                                                    infrastructure, DevOps, and CI/CD practices
+                                                </li>
+                                                <li>
+                                                    Transitioned to AI team, specializing in GenAI
+                                                    technologies and RAG applications
+                                                </li>
+                                                <li>
+                                                    Expert in LangChain, LangGraph, Vector
+                                                    Databases, and document extraction
+                                                </li>
+                                                <li>
+                                                    Designed and implemented RAG applications for
+                                                    enterprise clients
+                                                </li>
+                                                <li>
+                                                    Architecting, designing, and developing
+                                                    AgentVerse - enterprise-scale AI agent platform
+                                                    with MCP architecture, ADK, and A2A
+                                                </li>
+                                                <li>
+                                                    Developing vibe coding and vibe reviewing skills
+                                                    through daily use and practice - essential
+                                                    expertise for modern AI-based development
+                                                </li>
+                                                <li>
+                                                    Expert in Azure Bicep for Infrastructure as Code
+                                                    implementations
+                                                </li>
+                                                <li>
+                                                    Implementing AI-driven automation and best
+                                                    practices in cloud security
+                                                </li>
+                                                <li>
+                                                    Mentoring teams and driving technical excellence
+                                                    in AI and cloud domains
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-date">Jan 2023 - 2024</div>
+                                        <div class="timeline-content">
+                                            <h4>
+                                                Full-Time Parental Break - ML Research &amp;
+                                                Development
+                                            </h4>
+                                            <p class="company">
+                                                Personal Development &amp; Family Care
+                                            </p>
+                                            <ul>
+                                                <li>
+                                                    Dedicated full-time to childcare
+                                                    responsibilities and family support
+                                                </li>
+                                                <li>
+                                                    Acquired practical expertise in machine learning
+                                                    during the break
+                                                </li>
+                                                <li>
+                                                    Developed VersaVox - Python-based ML models for
+                                                    audio and text transcription
+                                                </li>
+                                                <li>
+                                                    Achieved 50% accuracy in Indic language
+                                                    classification
+                                                </li>
+                                                <li>
+                                                    Open-sourced ML models for audio and text
+                                                    transcription tasks
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-date">Oct 2018 - Dec 2022</div>
+                                        <div class="timeline-content">
+                                            <h4>Lead DevOps, Infra and Tools</h4>
+                                            <p class="company">Slang Labs, Bengaluru</p>
+                                            <ul>
+                                                <li>
+                                                    Optimized Docker build process, achieving 93%
+                                                    reduction in build time and 76% reduction in
+                                                    image size
+                                                </li>
+                                                <li>
+                                                    Enhanced CI/CD processes with GitLab CI/CD,
+                                                    resulting in 30% reduction in deployment time
+                                                </li>
+                                                <li>
+                                                    Implemented auto-deployment reducing manual
+                                                    intervention by 90%
+                                                </li>
+                                                <li>
+                                                    Achieved 99.99% uptime for SlangInfra, improving
+                                                    system reliability by 20%
+                                                </li>
+                                                <li>
+                                                    Migrated stateless microservices to Cloud Run,
+                                                    reducing infrastructure costs by 60%
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-date">Jan 2017 - Sep 2018</div>
+                                        <div class="timeline-content">
+                                            <h4>Software Engineering Lead | Principal Engineer</h4>
+                                            <p class="company">
+                                                xcelerator, HEd Experts, Bengaluru
+                                            </p>
+                                            <ul>
+                                                <li>
+                                                    Leveraged DevOps tools (Docker, Kubernetes, AWS,
+                                                    GCP) to streamline infrastructure
+                                                </li>
+                                                <li>
+                                                    Built applications with React, Phoenix
+                                                    Framework, Elixir, and PostgreSQL
+                                                </li>
+                                                <li>
+                                                    Containerized entire tech stack and migrated to
+                                                    AWS, reducing costs by 40%
+                                                </li>
+                                                <li>
+                                                    Led two teams with 80-90% success rate in
+                                                    parallel sprints
+                                                </li>
+                                                <li>
+                                                    Implemented Keycloak-based authentication system
+                                                    for enhanced security
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-date">May 2015 - Jan 2017</div>
+                                        <div class="timeline-content">
+                                            <h4>
+                                                VP Software Engineering | Senior Software Developer
+                                            </h4>
+                                            <p class="company">Thinqbot Technologies, Bengaluru</p>
+                                            <ul>
+                                                <li>
+                                                    Led engineering teams in cloud/IoT gateway
+                                                    infrastructure development
+                                                </li>
+                                                <li>
+                                                    Implemented Contiki OS on TI's cc2538 SoC with
+                                                    real-time sensors/actuators
+                                                </li>
+                                                <li>
+                                                    Designed distributed Cloud infrastructure on AWS
+                                                    for scalable solutions
+                                                </li>
+                                                <li>
+                                                    Developed microservices using Python,
+                                                    Elasticsearch, Django, and REST API
+                                                </li>
+                                                <li>
+                                                    Designed Ubuntu-based Gateway for hardware-cloud
+                                                    connectivity
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-date">Jul 2012 - Apr 2015</div>
+                                        <div class="timeline-content">
+                                            <h4>Software Engineer (Network Protocol)</h4>
+                                            <p class="company">Paxterra Solutions Inc, Bengaluru</p>
+                                            <ul>
+                                                <li>
+                                                    Implemented SDN technologies including OpenFlow,
+                                                    OF-Config, and OpenFlow Notifications Framework
+                                                </li>
+                                                <li>
+                                                    Conducted protocol mutation and DoS attacks as
+                                                    part of network penetration testing
+                                                </li>
+                                                <li>
+                                                    Developed Perl and Python scripts for network
+                                                    security testing
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-date">Sep 2009 - Jan 2012</div>
+                                        <div class="timeline-content">
+                                            <h4>Network Engineer | System Admin</h4>
+                                            <p class="company">Kochar Tech, Kolkata</p>
+                                            <ul>
+                                                <li>
+                                                    Configured and managed Cisco networking
+                                                    equipment (switches, routers, PIX firewall)
+                                                </li>
+                                                <li>
+                                                    Conducted network cable management and performed
+                                                    log analysis
+                                                </li>
+                                                <li>
+                                                    Automated OS updates for 500+ HP Mini PCs with
+                                                    99% success rate
+                                                </li>
+                                                <li>
+                                                    Expert in Windows Command Prompt and PowerShell
+                                                    administration
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-date">Nov 2008 - Aug 2009</div>
+                                        <div class="timeline-content">
+                                            <h4>L1 Technical Support Engineer</h4>
+                                            <p class="company">
+                                                Kaizen TI Services Pvt. Ltd., Kolkata
+                                            </p>
+                                            <ul>
+                                                <li>
+                                                    Achieved resolution time of under 60 minutes for
+                                                    90% of tickets
+                                                </li>
+                                                <li>
+                                                    Proficient in Microsoft Server 2003 and Altiris
+                                                    Deployment Server Administration
+                                                </li>
+                                                <li>
+                                                    Expert in Windows Group Policy and Windows
+                                                    Registry management
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="summary-item">
-                                <span>Time:</span>
-                                <span id="summaryTime"></span>
-                            </div>
-                            <div class="summary-item">
-                                <span>Duration:</span>
-                                <span id="summaryDuration"></span>
-                            </div>
                         </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-secondary" id="cancelBooking">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Confirm Booking</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title">Get In Touch</h2>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h3>Let's Connect</h3>
-                    <p>I'm always interested in new opportunities and exciting projects. Feel free to reach out!</p>
-                    
-                    <div class="contact-methods">
-                        <div class="contact-method">
-                            <i class="fas fa-envelope"></i>
-                            <div>
-                                <h4>Email</h4>
-                                <p>Available upon request</p>
+                        <div class="resume-section">
+                            <h3>Key Projects</h3>
+                            <div class="project-item">
+                                <h4>AgentVerse - Enterprise-Scale AI Agent Platform</h4>
+                                <p class="project-period">August 2025 - Present</p>
+                                <p class="project-description">
+                                    Architecting, designing, and developing AgentVerse, an
+                                    enterprise-scale AI agent platform built on MCP (Model Context
+                                    Protocol) architecture with ADK (Agent Development Kit) and A2A
+                                    (Agent-to-Agent) communication capabilities. The solution
+                                    enables organizations to deploy, manage, and orchestrate
+                                    multiple AI agents for complex business workflows. Features
+                                    include advanced agent communication protocols, task
+                                    distribution, monitoring, ADK for rapid agent development, and
+                                    scalable infrastructure for handling enterprise-level AI agent
+                                    deployments with seamless A2A interactions.
+                                </p>
+                                <div class="project-links">
+                                    <a href="#contact" class="btn btn-secondary">
+                                        <i class="fas fa-envelope" aria-hidden="true"></i> Contact
+                                        for Details
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="contact-method">
-                            <i class="fas fa-phone"></i>
-                            <div>
-                                <h4>Phone</h4>
-                                <p>Available upon request</p>
+                            <div class="project-item">
+                                <h4>RAG Application Design &amp; Implementation</h4>
+                                <p class="project-period">2024 - Present</p>
+                                <p class="project-description">
+                                    Designed and implemented comprehensive RAG (Retrieval-Augmented
+                                    Generation) applications using LangChain, LangGraph, and Vector
+                                    Databases. Built intelligent document extraction and processing
+                                    systems that enable enterprise clients to leverage their data
+                                    for AI-powered insights and automation. The solution includes
+                                    advanced document parsing, vector embeddings, and context-aware
+                                    response generation.
+                                </p>
+                                <div class="project-links">
+                                    <a href="#contact" class="btn btn-secondary">
+                                        <i class="fas fa-envelope" aria-hidden="true"></i> Contact
+                                        for Details
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="contact-method">
-                            <i class="fab fa-linkedin"></i>
-                            <div>
-                                <h4>LinkedIn</h4>
-                                <p><a href="https://www.linkedin.com/in/manikantthakur/" target="_blank">linkedin.com/in/manikantthakur/</a></p>
-                            </div>
-                        </div>
-                        <div class="contact-method">
-                            <i class="fab fa-github"></i>
-                            <div>
-                                <h4>GitHub</h4>
-                                <p><a href="http://github.com/manikantThakur" target="_blank">github.com/manikantThakur</a></p>
+                            <div class="project-item">
+                                <h4>VersaVox - ML Research &amp; Development</h4>
+                                <p class="project-period">Ongoing Research and Development</p>
+                                <p class="project-description">
+                                    Developed a range of Python-based ML models, both open-source
+                                    and proprietary, aimed at addressing various challenges in audio
+                                    and text transcription domains. Designed open-source ML models
+                                    specifically tailored for audio and text transcription tasks,
+                                    achieving an accuracy rate of 50% in Indic language
+                                    classification.
+                                </p>
+                                <div class="project-links">
+                                    <a
+                                        href="https://github.com/manikantthakur/VersaVox"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="btn btn-secondary"
+                                    >
+                                        <i class="fab fa-github" aria-hidden="true"></i> View on
+                                        GitHub
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="contact-form">
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+            </section>
+
+            <!-- Booking Section -->
+            <section id="booking" class="booking">
+                <div class="container">
+                    <h2 class="section-title">Book a Session</h2>
+                    <div class="booking-content">
+                        <div class="booking-info">
+                            <h3>Request a Consultation</h3>
+                            <p>
+                                Ready to discuss your cloud infrastructure, DevOps, or AI project?
+                                Send a session request and I'll confirm a time with you by email
+                                &mdash; in your timezone.
+                            </p>
+
+                            <div class="session-types">
+                                <div class="session-type">
+                                    <i class="fas fa-cloud" aria-hidden="true"></i>
+                                    <h4>Cloud Architecture Review</h4>
+                                    <p>30-60 minutes</p>
+                                    <span class="price">Free Consultation</span>
+                                </div>
+                                <div class="session-type">
+                                    <i class="fas fa-robot" aria-hidden="true"></i>
+                                    <h4>AI/GenAI Strategy</h4>
+                                    <p>45-90 minutes</p>
+                                    <span class="price">Free Consultation</span>
+                                </div>
+                                <div class="session-type">
+                                    <i class="fas fa-tools" aria-hidden="true"></i>
+                                    <h4>DevOps &amp; CI/CD</h4>
+                                    <p>30-60 minutes</p>
+                                    <span class="price">Free Consultation</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+
+                        <div class="booking-form-card">
+                            <h3>Session Request</h3>
+                            <p class="form-hint">
+                                Preferred times are read as IST (India Standard Time). I'll reply to
+                                arrange a slot that works for both of us.
+                            </p>
+                            <form
+                                id="bookingForm"
+                                class="stacked-form"
+                                action="https://formspree.io/f/mgvndopo"
+                                method="POST"
+                            >
+                                <!-- Honeypot: hidden from people, tempting to bots. A filled
+                                     value is dropped by the JS and by Formspree server-side.
+                                     Kept out of the tab order and off-screen (not display:none)
+                                     so it isn't flagged as a hidden focusable control. -->
+                                <p class="hp-field">
+                                    <label for="bookingGotcha">Leave this field empty</label>
+                                    <input
+                                        type="text"
+                                        id="bookingGotcha"
+                                        name="_gotcha"
+                                        tabindex="-1"
+                                        autocomplete="off"
+                                    />
+                                </p>
+                                <div class="form-group">
+                                    <label for="clientName">Full Name *</label>
+                                    <input
+                                        type="text"
+                                        id="clientName"
+                                        name="name"
+                                        autocomplete="name"
+                                        required
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <label for="clientEmail">Email Address *</label>
+                                    <input
+                                        type="email"
+                                        id="clientEmail"
+                                        name="email"
+                                        autocomplete="email"
+                                        required
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <label for="clientPhone">Phone Number</label>
+                                    <input
+                                        type="tel"
+                                        id="clientPhone"
+                                        name="phone"
+                                        autocomplete="tel"
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <label for="sessionType">Session Type *</label>
+                                    <select id="sessionType" name="session_type" required>
+                                        <option value="">Select session type</option>
+                                        <option value="Cloud Architecture Review">
+                                            Cloud Architecture Review
+                                        </option>
+                                        <option value="AI/GenAI Strategy">AI/GenAI Strategy</option>
+                                        <option value="DevOps &amp; CI/CD">
+                                            DevOps &amp; CI/CD
+                                        </option>
+                                        <option value="General Consultation">
+                                            General Consultation
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sessionDuration">Duration *</label>
+                                    <select id="sessionDuration" name="duration" required>
+                                        <option value="">Select duration</option>
+                                        <option value="30 minutes">30 minutes</option>
+                                        <option value="60 minutes">60 minutes</option>
+                                        <option value="90 minutes">90 minutes</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="meetingType">Meeting Type *</label>
+                                    <select id="meetingType" name="meeting_type" required>
+                                        <option value="">Select meeting type</option>
+                                        <option value="Video call (Google Meet / Zoom)">
+                                            Video call (Google Meet / Zoom)
+                                        </option>
+                                        <option value="Phone call">Phone call</option>
+                                        <option value="In person (if local)">
+                                            In person (if local)
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="preferredDate">Preferred Date</label>
+                                        <input
+                                            type="date"
+                                            id="preferredDate"
+                                            name="preferred_date"
+                                        />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="preferredTime">Preferred Time (IST)</label>
+                                        <select id="preferredTime" name="preferred_time">
+                                            <option value="Flexible">Flexible</option>
+                                            <option value="Morning (09:00-12:00 IST)">
+                                                Morning (09:00-12:00)
+                                            </option>
+                                            <option value="Afternoon (12:00-15:00 IST)">
+                                                Afternoon (12:00-15:00)
+                                            </option>
+                                            <option value="Late afternoon (15:00-18:00 IST)">
+                                                Late afternoon (15:00-18:00)
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="projectDescription">Project Description</label>
+                                    <textarea
+                                        id="projectDescription"
+                                        name="project_description"
+                                        rows="4"
+                                        placeholder="Briefly describe your project or what you'd like to discuss..."
+                                    ></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="additionalNotes">Additional Notes</label>
+                                    <textarea
+                                        id="additionalNotes"
+                                        name="additional_notes"
+                                        rows="3"
+                                        placeholder="Any specific questions or topics you'd like to cover..."
+                                    ></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    Send Booking Request
+                                </button>
+                                <p
+                                    class="form-status"
+                                    id="bookingStatus"
+                                    role="status"
+                                    aria-live="polite"
+                                ></p>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="contact">
+                <div class="container">
+                    <h2 class="section-title">Get In Touch</h2>
+                    <div class="contact-content">
+                        <div class="contact-info">
+                            <h3>Let's Connect</h3>
+                            <p>
+                                I'm always interested in new opportunities and exciting projects.
+                                Feel free to reach out!
+                            </p>
+
+                            <div class="contact-methods">
+                                <div class="contact-method">
+                                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                                    <div>
+                                        <h4>Email</h4>
+                                        <p>Available upon request</p>
+                                    </div>
+                                </div>
+                                <div class="contact-method">
+                                    <i class="fas fa-phone" aria-hidden="true"></i>
+                                    <div>
+                                        <h4>Phone</h4>
+                                        <p>Available upon request</p>
+                                    </div>
+                                </div>
+                                <div class="contact-method">
+                                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                                    <div>
+                                        <h4>LinkedIn</h4>
+                                        <p>
+                                            <a
+                                                href="https://www.linkedin.com/in/manikantthakur/"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                >linkedin.com/in/manikantthakur/</a
+                                            >
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="contact-method">
+                                    <i class="fab fa-github" aria-hidden="true"></i>
+                                    <div>
+                                        <h4>GitHub</h4>
+                                        <p>
+                                            <a
+                                                href="https://github.com/manikantthakur"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                >github.com/manikantthakur</a
+                                            >
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+
+                        <div class="contact-form">
+                            <form
+                                id="contactForm"
+                                action="https://formspree.io/f/mgvndopo"
+                                method="POST"
+                            >
+                                <!-- Honeypot - see note on the booking form. -->
+                                <p class="hp-field">
+                                    <label for="contactGotcha">Leave this field empty</label>
+                                    <input
+                                        type="text"
+                                        id="contactGotcha"
+                                        name="_gotcha"
+                                        tabindex="-1"
+                                        autocomplete="off"
+                                    />
+                                </p>
+                                <div class="form-group">
+                                    <label for="name" class="visually-hidden">Your Name</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        placeholder="Your Name"
+                                        autocomplete="name"
+                                        required
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <label for="email" class="visually-hidden">Your Email</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        placeholder="Your Email"
+                                        autocomplete="email"
+                                        required
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <label for="subject" class="visually-hidden">Subject</label>
+                                    <input
+                                        type="text"
+                                        id="subject"
+                                        name="subject"
+                                        placeholder="Subject"
+                                        autocomplete="off"
+                                        required
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <label for="message" class="visually-hidden"
+                                        >Your Message</label
+                                    >
+                                    <textarea
+                                        id="message"
+                                        name="message"
+                                        placeholder="Your Message"
+                                        rows="5"
+                                        required
+                                    ></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                                <p
+                                    class="form-status"
+                                    id="contactStatus"
+                                    role="status"
+                                    aria-live="polite"
+                                ></p>
+                            </form>
                         </div>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
-                    </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <p>&copy; 2026 Manikant Thakur. All rights reserved.</p>
+                    <div class="social-links">
+                        <a
+                            href="https://github.com/manikantthakur"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="GitHub profile"
+                            ><i class="fab fa-github" aria-hidden="true"></i
+                        ></a>
+                        <a
+                            href="https://www.linkedin.com/in/manikantthakur/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="LinkedIn profile"
+                            ><i class="fab fa-linkedin" aria-hidden="true"></i
+                        ></a>
+                        <a href="#contact" aria-label="Jump to contact section"
+                            ><i class="fas fa-envelope" aria-hidden="true"></i
+                        ></a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2024 Manikant Thakur. All rights reserved.</p>
-                <div class="social-links">
-                    <a href="http://github.com/manikantThakur" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="https://www.linkedin.com/in/manikantthakur/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a href="#contact"><i class="fas fa-envelope"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="js/main.js"></script>
-    
-    <!-- Debug console for GitHub Pages -->
-    <script>
-        // Debug information for GitHub Pages
-        console.log('Website loaded successfully');
-        console.log('Current URL:', window.location.href);
-        console.log('Protocol:', window.location.protocol);
-        
-        // Check if we're on GitHub Pages
-        if (window.location.hostname.includes('github.io')) {
-            console.log('Running on GitHub Pages');
-        } else {
-            console.log('Running locally');
-        }
-        
-        // Test Formspree connectivity
-        window.addEventListener('load', () => {
-            fetch('https://formspree.io/f/mgvndopo', {
-                method: 'HEAD'
-            }).then(response => {
-                console.log('Formspree connectivity test:', response.status);
-            }).catch(error => {
-                console.error('Formspree connectivity error:', error);
-            });
-        });
-    </script>
-</body>
+        </footer>
+    </body>
 </html>

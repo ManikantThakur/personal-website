@@ -1,88 +1,78 @@
-# Formspree Configuration for Booking System
+# Formspree Configuration
 
-## Your Formspree Endpoint
+Both forms on the site (the **contact** form and the **session request** form) POST to a
+single Formspree endpoint:
+
 ```
 https://formspree.io/f/mgvndopo
 ```
 
-## A. Email Notifications (You'll receive these)
+The endpoint is set once in `js/main.js`:
 
-### Settings to Configure in Formspree Dashboard:
-
-1. **Go to your form** in Formspree dashboard
-2. **Click on "Settings"** or "Notifications"
-3. **Enable email notifications** to your email address
-4. **Set the email subject** to: `New Booking: {{booking_id}} - {{name}}`
-
-### Email Template for Notifications (Optional):
-```html
-<h2>New Booking Request</h2>
-<p><strong>Client:</strong> {{name}} ({{email}})</p>
-<p><strong>Phone:</strong> {{phone}}</p>
-<p><strong>Booking ID:</strong> {{booking_id}}</p>
-<p><strong>Date:</strong> {{booking_date}}</p>
-<p><strong>Time:</strong> {{booking_time}}</p>
-<p><strong>Session Type:</strong> {{session_type}}</p>
-<p><strong>Duration:</strong> {{session_duration}}</p>
-<p><strong>Meeting Type:</strong> {{meeting_type}}</p>
-<p><strong>Project Description:</strong> {{project_description}}</p>
-<p><strong>Additional Notes:</strong> {{additional_notes}}</p>
+```js
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mgvndopo';
 ```
 
-## B. Auto-Responder (Optional - for client confirmations)
+Submission is a `fetch` POST of `FormData` with `Accept: application/json`. On a non-2xx
+response the user sees an inline error and is told to email directly.
 
-### Settings to Configure in Formspree Dashboard:
+## Fields sent
 
-1. **Enable auto-responder** in Formspree settings
-2. **Set the subject** to: `Booking Confirmation - {{booking_id}}`
-3. **Use this email template**:
+### Session request form (`#bookingForm`)
 
-```html
-<h2>Booking Confirmation</h2>
-<p>Dear {{name}},</p>
-<p>Thank you for booking a session with Manikant Thakur!</p>
+| Field                 | Notes                                                           |
+| --------------------- | --------------------------------------------------------------- |
+| `name`                | required                                                        |
+| `email`               | required, validated client-side                                 |
+| `phone`               | optional                                                        |
+| `session_type`        | required                                                        |
+| `duration`            | required, e.g. `60 minutes`                                     |
+| `meeting_type`        | required                                                        |
+| `preferred_date`      | optional, `YYYY-MM-DD` from a native date input                 |
+| `preferred_time`      | optional, a labelled IST range or `Flexible`                    |
+| `project_description` | optional                                                        |
+| `additional_notes`    | optional                                                        |
+| `_subject`            | `New session request — {name}`                                  |
+| `_gotcha`             | honeypot; if non-empty the JS reports success and sends nothing |
 
-<h3>Your Booking Details:</h3>
-<ul>
-<li><strong>Booking ID:</strong> {{booking_id}}</li>
-<li><strong>Date:</strong> {{booking_date}}</li>
-<li><strong>Time:</strong> {{booking_time}}</li>
-<li><strong>Session Type:</strong> {{session_type}}</li>
-<li><strong>Duration:</strong> {{session_duration}}</li>
-<li><strong>Meeting Type:</strong> {{meeting_type}}</li>
-</ul>
+### Contact form (`#contactForm`)
 
-<p>You will receive a calendar invite shortly.</p>
-<p>Best regards,<br>Manikant Thakur</p>
-```
+| Field                                 | Notes                            |
+| ------------------------------------- | -------------------------------- |
+| `name`, `email`, `subject`, `message` | all required                     |
+| `_subject`                            | `New contact message: {subject}` |
+| `_gotcha`                             | honeypot                         |
 
-## Form Fields Being Sent
+There is no `booking_id`, `booking_date`, `booking_time`, or `session_duration` — those
+belonged to the old calendar widget and were removed.
 
-The following fields are automatically sent to Formspree:
+## Dashboard settings
 
-- `name` - Client's full name
-- `email` - Client's email address  
-- `phone` - Client's phone number
-- `session_type` - Type of session (Cloud Architecture, AI Strategy, etc.)
-- `session_duration` - Duration in minutes
-- `meeting_type` - Video call, phone, or in-person
-- `project_description` - Client's project description
-- `additional_notes` - Any additional notes
-- `booking_date` - Selected date (formatted)
-- `booking_time` - Selected time
-- `booking_id` - Unique booking ID
+1. **Notifications** — enable email to your address. A useful subject is the `_subject`
+   the form already sends, or `{{_subject}}`.
+2. **Optional notification template:**
 
-## Testing Checklist
+    ```html
+    <h2>{{_subject}}</h2>
+    <p><strong>From:</strong> {{name}} ({{email}}){{#phone}} · {{phone}}{{/phone}}</p>
+    <p><strong>Session:</strong> {{session_type}} — {{duration}} — {{meeting_type}}</p>
+    <p><strong>Preferred:</strong> {{preferred_date}} {{preferred_time}}</p>
+    <p><strong>Project:</strong> {{project_description}}</p>
+    <p><strong>Notes:</strong> {{additional_notes}}</p>
+    <hr />
+    <p><strong>Message:</strong> {{message}}</p>
+    ```
 
-- [ ] Formspree endpoint configured in js/main.js
-- [ ] Email notifications enabled in Formspree
-- [ ] Auto-responder configured (optional)
-- [ ] Test booking submitted successfully
-- [ ] Email notification received
-- [ ] Client confirmation sent (if auto-responder enabled)
+    (Fields not present in a given submission render empty — one template covers both forms.)
 
-## Troubleshooting
+3. **Auto-responder (optional)** — a short "thanks, I'll confirm a time by email" reply.
+   Do **not** promise a calendar invite automatically; slots are confirmed by hand.
+4. **Spam** — the `_gotcha` honeypot is handled client-side; Formspree also honors its own
+   `_gotcha` server-side. Leave Formspree's reCAPTCHA off unless spam becomes a problem.
 
-- **Form not submitting**: Check browser console for errors
-- **No emails received**: Check spam folder and Formspree settings
-- **Missing data**: Verify all form fields are being sent correctly
+## Checklist
+
+-   [ ] `FORMSPREE_ENDPOINT` in `js/main.js` is correct
+-   [ ] Email notifications enabled in the Formspree dashboard
+-   [ ] Test submission from the deployed site succeeds and arrives by email
+-   [ ] Submitting with the honeypot filled sends nothing (dev check)
